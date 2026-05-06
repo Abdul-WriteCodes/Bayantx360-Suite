@@ -19,7 +19,10 @@ import plotly.graph_objects as go
 import io, sys, os, warnings, re
 warnings.filterwarnings("ignore")
 
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
+_here = os.path.dirname(os.path.abspath(__file__))
+_root = os.path.dirname(_here)
+if _root not in sys.path:
+    sys.path.insert(0, _root)
 from utils.auth import (
     is_authenticated, is_free_trial, current_credits,
     validate_key, login_free_trial, login_with_key,
@@ -327,6 +330,20 @@ button[data-testid="collapsedControl"] {
 # ═══════════════════════════════════════════════════════════════════════════════
 # AUTH GATE
 # ═══════════════════════════════════════════════════════════════════════════════
+# ── Session state init ──────────────────────────────────────────────────────
+for key, default in [
+    ("authenticated", False),
+    ("is_free_trial", False),
+    ("access_key", ""),
+    ("key_owner", ""),
+    ("credits", 0),
+    ("synth_df", None), ("trust_metrics", None),
+    ("gen_status", None), ("ai_explanation", ""),
+    ("ai_use_case_saved", False),
+]:
+    if key not in st.session_state:
+        st.session_state[key] = default
+
 if not is_authenticated():
     def render_landing():
         st.html("""
