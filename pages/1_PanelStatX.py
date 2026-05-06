@@ -26,7 +26,11 @@ import warnings
 warnings.filterwarnings("ignore")
 
 # ── Ensure utils is importable from the project root ────────────────────────
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
+# Resolve project root robustly on both local and Streamlit Cloud
+_here = os.path.dirname(os.path.abspath(__file__))
+_root = os.path.dirname(_here)
+if _root not in sys.path:
+    sys.path.insert(0, _root)
 from utils.auth import (
     is_authenticated, is_free_trial, current_credits,
     validate_key, login_free_trial, login_with_key,
@@ -1216,6 +1220,12 @@ def build_docx_report(res, model_type, ai_explanation=""):
 # SESSION STATE  (product-specific keys only; auth keys managed by utils.auth)
 # ═══════════════════════════════════════════════════════════════════════════════
 for key, default in [
+    # Original app keys (keep for compatibility with landing page logic)
+    ("access_granted", False), ("access_error", ""),
+    ("user_key", ""), ("user_credits", 0),
+    ("user_email", ""), ("user_row", None),
+    ("is_free_trial", False),
+    # Analysis keys
     ("df", None), ("results", None), ("ai_explanation", ""),
     ("model_type", "Fixed Effects (Two-Way)"),
     ("_credit_msg", None),
