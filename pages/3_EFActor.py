@@ -18,7 +18,10 @@ import numpy as np
 import io, sys, os, warnings
 warnings.filterwarnings("ignore")
 
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
+_here = os.path.dirname(os.path.abspath(__file__))
+_root = os.path.dirname(_here)
+if _root not in sys.path:
+    sys.path.insert(0, _root)
 from utils.auth import (
     is_authenticated, is_free_trial, current_credits,
     validate_key, login_free_trial, login_with_key,
@@ -169,6 +172,28 @@ COL_KEY          = "Key"
 # ═══════════════════════════════════════════════════════════════════════════════
 # AUTH GATE
 # ═══════════════════════════════════════════════════════════════════════════════
+# ── Session state init ──────────────────────────────────────────────────────
+for key, default in [
+    ("authenticated", False),
+    ("is_free_trial", False),
+    ("access_key", ""),
+    ("key_owner", "Researcher"),
+    ("credits", 0),
+    ("_last_file_key", None),
+    ("df_original", None), ("df_working", None),
+    ("suitability", None), ("n_factors_auto", None),
+    ("eigenvalues", None), ("efa_result", None),
+    ("diagnostics", None), ("efa_done", False),
+    ("dropped_vars", []),
+    ("cfa_result", None), ("fit_assessment", None),
+    ("synthetic_factor", None), ("synthetic_corr", None),
+    ("syn_validation", None), ("report_docx", None),
+    ("df_autofix", None), ("fix_log", None),
+    ("autofix_efa_result", None),
+]:
+    if key not in st.session_state:
+        st.session_state[key] = default
+
 if not is_authenticated():
     def render_landing():
         st.markdown("""
