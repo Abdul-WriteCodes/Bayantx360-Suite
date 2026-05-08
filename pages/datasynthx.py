@@ -400,7 +400,7 @@ with st.sidebar:
     gen_status = st.session_state.get("gen_status")
     if gen_status == "done":
         sci_val = st.session_state.get("trust_metrics", {}).get("sci", "—")
-        n_synth = len(st.session_state.get("synth_df") or [])
+        n_synth = len(st.session_state["synth_df"]) if st.session_state.get("synth_df") is not None else 0
         st.markdown(f"""
         <div style="background:rgba(0,229,200,0.06);border:1px solid rgba(0,229,200,0.22);
                     border-radius:8px;padding:10px 12px;margin-top:8px;">
