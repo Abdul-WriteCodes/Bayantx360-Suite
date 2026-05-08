@@ -5,13 +5,12 @@ Bayantx360 Suite — Landing Page, Auth Gate & App Selector
 ══════════════════════════════════════════════════════════════════════
 
 Routing architecture (Streamlit V2 MPA):
-  • st.navigation() registers all pages; _pg.run() activates the router.
-  • suite_home.py is the entrypoint AND a page — defined as a callable
-    (render_home) so _pg.run() calls the function directly instead of
-    re-exec'ing this file (which would cause an infinite loop).
-  • Launch buttons set st.session_state["_goto"] + st.rerun(). The _goto
-    is consumed at the top of render_home() BEFORE any rendering, then
-    st.switch_page() fires cleanly.
+  • st.navigation() must be the FIRST Streamlit call — before set_page_config.
+  • render_home() is a callable passed to st.Page() to avoid the infinite
+    re-exec loop that would occur if suite_home.py were registered by path.
+  • _pg.run() activates the router; for the home URL it calls render_home().
+  • Launch buttons set st.session_state["_goto"] + st.rerun(). _goto is
+    consumed at the top of render_home() so st.switch_page() fires cleanly.
 """
 
 import streamlit as st
@@ -28,15 +27,10 @@ from shared.auth import (
     is_trial,
 )
 
-# ── Page config — must be first Streamlit call ────────────────────────────────
-st.set_page_config(
-    page_title="Bayantx360 Suite",
-    page_icon="⬡",
-    layout="wide",
-    initial_sidebar_state="collapsed",
-)
-
-# ── V2 navigation — callable page avoids the re-exec loop ─────────────────────
+# ─────────────────────────────────────────────────────────────────────────────
+# All home page content lives inside render_home() so it can be passed as a
+# callable to st.Page(). This avoids re-exec'ing this file when _pg.run() fires.
+# ─────────────────────────────────────────────────────────────────────────────
 def render_home():
     """Landing page, auth gate, and app selector — all in one."""
 
@@ -708,34 +702,34 @@ def render_home():
         # App cards + launch buttons
         APPS = [
             {
-                "name":    "PanelStatX",
-                "icon":    "📐",
-                "color":   "teal",
-                "check":   "sel-check-teal",
-                "btn":     "sel-btn-teal",
-                "desc":    "Production-grade panel econometrics with Fixed Effects, Random Effects, and First-Difference estimators.",
+                "name":     "PanelStatX",
+                "icon":     "📐",
+                "color":    "teal",
+                "check":    "sel-check-teal",
+                "btn":      "sel-btn-teal",
+                "desc":     "Production-grade panel econometrics with Fixed Effects, Random Effects, and First-Difference estimators.",
                 "features": ["OLS · FE · RE · First-Difference models", "Breusch-Pagan & Hausman tests", "Entity cross-section plots", "AI explainer (paid)", "DOCX report export (paid)"],
-                "page":    "pages/panelstatx",
+                "page_obj": st.session_state["_panelstatx_page"],
             },
             {
-                "name":    "DataSynthX",
-                "icon":    "🧬",
-                "color":   "purple",
-                "check":   "sel-check-purple",
-                "btn":     "sel-btn-purple",
-                "desc":    "Statistical synthetic data generation with full trust-metric validation and conformity scoring.",
+                "name":     "DataSynthX",
+                "icon":     "🧬",
+                "color":    "purple",
+                "check":    "sel-check-purple",
+                "btn":      "sel-btn-purple",
+                "desc":     "Statistical synthetic data generation with full trust-metric validation and conformity scoring.",
                 "features": ["Auto data profiling", "Synthetic generation engine", "Correlation & distribution fidelity", "AI trust analysis (paid)", "CSV / Excel export (paid)"],
-                "page":    "pages/datasynthx",
+                "page_obj": st.session_state["_datasynthx_page"],
             },
             {
-                "name":    "EFActor",
-                "icon":    "🔬",
-                "color":   "amber",
-                "check":   "sel-check-amber",
-                "btn":     "sel-btn-amber",
-                "desc":    "Psychometric analysis platform for Exploratory and Confirmatory Factor Analysis with auto-fix.",
+                "name":     "EFActor",
+                "icon":     "🔬",
+                "color":    "amber",
+                "check":    "sel-check-amber",
+                "btn":      "sel-btn-amber",
+                "desc":     "Psychometric analysis platform for Exploratory and Confirmatory Factor Analysis with auto-fix.",
                 "features": ["KMO suitability & scree plot", "EFA with rotation (varimax etc.)", "CFA & fit indices", "Auto-fix problematic variables", "DOCX report export (paid)"],
-                "page":    "pages/efactor",
+                "page_obj": st.session_state["_efactor_page"],
             },
         ]
 
@@ -762,8 +756,9 @@ def render_home():
                     key=f"launch_{app['name']}",
                     use_container_width=True,
                 ):
-                    st.session_state["_goto"] = f"{app['page']}.py"
-                    st.rerun()
+                    # Use StreamlitPage object — required for V2 callable-based routing.
+                    # String paths don't resolve when the home page is a callable.
+                    st.switch_page(app["page_obj"])
                 st.markdown("</div>", unsafe_allow_html=True)
 
         st.markdown("<br><br>", unsafe_allow_html=True)
@@ -1124,14 +1119,31 @@ def render_home():
         process_key_login(entered_key)
 
 
-# ── Register pages and run the router ─────────────────────────────────────────
+# ── V2 Router setup ───────────────────────────────────────────────────────────
+# st.navigation() MUST come before st.set_page_config() — it is the first
+# Streamlit call. _pg.run() dispatches to the current page's callable/file.
+_home_page      = st.Page(render_home,            title="Bayantx360 Suite", icon="🌐", default=True)
+_panelstatx_page = st.Page("pages/panelstatx.py",  title="PanelStatX",       icon="📐")
+_datasynthx_page = st.Page("pages/datasynthx.py",  title="DataSynthX",       icon="🧬")
+_efactor_page    = st.Page("pages/efactor.py",     title="EFActor",          icon="🔬")
+
 _pg = st.navigation(
-    [
-        st.Page(render_home,            title="Bayantx360 Suite", icon="🌐", default=True),
-        st.Page("pages/panelstatx.py",  title="PanelStatX",       icon="📐"),
-        st.Page("pages/datasynthx.py",  title="DataSynthX",       icon="🧬"),
-        st.Page("pages/efactor.py",     title="EFActor",          icon="🔬"),
-    ],
+    [_home_page, _panelstatx_page, _datasynthx_page, _efactor_page],
     position="hidden",
 )
+
+st.set_page_config(
+    page_title="Bayantx360 Suite",
+    page_icon="⬡",
+    layout="wide",
+    initial_sidebar_state="collapsed",
+)
+
+# Store page objects in session so sub-pages can switch back to home
+# without using "suite_home.py" string path (invalid for callable pages).
+st.session_state["_home_page"]       = _home_page
+st.session_state["_panelstatx_page"] = _panelstatx_page
+st.session_state["_datasynthx_page"] = _datasynthx_page
+st.session_state["_efactor_page"]    = _efactor_page
+
 _pg.run()
