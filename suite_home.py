@@ -38,7 +38,7 @@ from shared.auth import (
 # app-selector cards and deferred _goto pattern.
 _pg = st.navigation(
     [
-        st.Page("suite_home.py",        title="Bayantx360 Suite", icon="🌐", default=True),
+        st.Page("suite_home.py",        title="Bayantx360 Suite", icon="⬡", default=True),
         st.Page("pages/panelstatx.py",  title="PanelStatX",       icon="📐"),
         st.Page("pages/datasynthx.py",  title="DataSynthX",       icon="🧬"),
         st.Page("pages/efactor.py",     title="EFActor",          icon="🔬"),
@@ -897,61 +897,59 @@ st.markdown("""
 </div>
 """, unsafe_allow_html=True)
 
-# Apps showcase — fully inline-styled (no class names) so Streamlit won't sanitise
+# Apps showcase — uses CSS classes defined in the style block above
 st.markdown("""
-<div style="max-width:1060px;margin:0 auto;padding:clamp(32px,5vw,64px) clamp(20px,5vw,48px);">
-  <div style="text-align:center;margin-bottom:44px;">
-    <span style="font-family:'DM Mono',monospace;font-size:0.56rem;letter-spacing:0.22em; text-transform:uppercase;color:#4e576e;margin-bottom:12px;display:block;">
-      What's inside the suite
-    </span>
-    <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:700; font-size:clamp(1.6rem,3.2vw,2.2rem);color:#e4eaf8;letter-spacing:-0.03em;margin:0;">
-      Three precision tools.<br/><span style="color:#00e5c8;">One unified platform.</span>
+<div class="apps-section fi d3">
+  <div class="section-head">
+    <span class="section-label">What's inside the suite</span>
+    <div class="section-title">
+      Three precision tools.<br/><em>One unified platform.</em>
     </div>
   </div>
-  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:18px;">
+  <div class="apps-grid">
 
-    <div style="background:#10141f;border:1px solid rgba(255,255,255,0.06);border-radius:20px; padding:28px 24px;position:relative;overflow:hidden;transition:transform 0.25s;">
-      <div style="width:48px;height:48px;border-radius:13px;display:flex;align-items:center; justify-content:center;font-size:1.4rem;margin-bottom:20px; background:rgba(0,229,200,0.1);border:1px solid rgba(0,229,200,0.2);">📐</div>
-      <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:1.05rem; color:#e4eaf8;letter-spacing:-0.02em;margin-bottom:10px;">PanelStatX</div>
-      <div style="font-family:'DM Mono',monospace;font-size:0.68rem;color:#9aa3be; line-height:1.85;margin-bottom:20px;">
+    <div class="app-card teal">
+      <div class="app-icon teal">📐</div>
+      <div class="app-name">PanelStatX</div>
+      <div class="app-desc">
         Production-grade panel econometrics. Run Fixed Effects, Random Effects,
         First-Difference, and Pooled OLS regressions with complete diagnostic suites
         and AI-powered interpretation.
       </div>
-      <div style="display:flex;flex-wrap:wrap;gap:6px;">
-        <span style="font-family:'DM Mono',monospace;font-size:0.54rem;letter-spacing:0.06em; text-transform:uppercase;padding:4px 10px;border-radius:6px; border:1px solid rgba(255,255,255,0.06);color:#4e576e;">Econometrics</span>
-        <span style="font-family:'DM Mono',monospace;font-size:0.54rem;letter-spacing:0.06em; text-transform:uppercase;padding:4px 10px;border-radius:6px; border:1px solid rgba(255,255,255,0.06);color:#4e576e;">Panel Data</span>
-        <span style="font-family:'DM Mono',monospace;font-size:0.54rem;letter-spacing:0.06em; text-transform:uppercase;padding:4px 10px;border-radius:6px; border:1px solid rgba(255,255,255,0.06);color:#4e576e;">AI Explainer</span>
+      <div class="app-tags">
+        <span class="app-tag">Econometrics</span>
+        <span class="app-tag">Panel Data</span>
+        <span class="app-tag">AI Explainer</span>
       </div>
     </div>
 
-    <div style="background:#10141f;border:1px solid rgba(255,255,255,0.06);border-radius:20px; padding:28px 24px;position:relative;overflow:hidden;transition:transform 0.25s;">
-      <div style="width:48px;height:48px;border-radius:13px;display:flex;align-items:center; justify-content:center;font-size:1.4rem;margin-bottom:20px; background:rgba(124,109,240,0.1);border:1px solid rgba(124,109,240,0.2);">🧬</div>
-      <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:1.05rem; color:#e4eaf8;letter-spacing:-0.02em;margin-bottom:10px;">DataSynthX</div>
-      <div style="font-family:'DM Mono',monospace;font-size:0.68rem;color:#9aa3be; line-height:1.85;margin-bottom:20px;">
+    <div class="app-card purple">
+      <div class="app-icon purple">🧬</div>
+      <div class="app-name">DataSynthX</div>
+      <div class="app-desc">
         Upload real data, generate high-fidelity synthetic equivalents.
         Validates output with correlation preservation scores,
         distribution similarity metrics, and a Synthetic Conformity Index.
       </div>
-      <div style="display:flex;flex-wrap:wrap;gap:6px;">
-        <span style="font-family:'DM Mono',monospace;font-size:0.54rem;letter-spacing:0.06em; text-transform:uppercase;padding:4px 10px;border-radius:6px; border:1px solid rgba(255,255,255,0.06);color:#4e576e;">Synthetic Data</span>
-        <span style="font-family:'DM Mono',monospace;font-size:0.54rem;letter-spacing:0.06em; text-transform:uppercase;padding:4px 10px;border-radius:6px; border:1px solid rgba(255,255,255,0.06);color:#4e576e;">Privacy-Safe</span>
-        <span style="font-family:'DM Mono',monospace;font-size:0.54rem;letter-spacing:0.06em; text-transform:uppercase;padding:4px 10px;border-radius:6px; border:1px solid rgba(255,255,255,0.06);color:#4e576e;">Trust Metrics</span>
+      <div class="app-tags">
+        <span class="app-tag">Synthetic Data</span>
+        <span class="app-tag">Privacy-Safe</span>
+        <span class="app-tag">Trust Metrics</span>
       </div>
     </div>
 
-    <div style="background:#10141f;border:1px solid rgba(255,255,255,0.06);border-radius:20px; padding:28px 24px;position:relative;overflow:hidden;transition:transform 0.25s;">
-      <div style="width:48px;height:48px;border-radius:13px;display:flex;align-items:center; justify-content:center;font-size:1.4rem;margin-bottom:20px; background:rgba(245,166,35,0.1);border:1px solid rgba(245,166,35,0.2);">🔬</div>
-      <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:1.05rem; color:#e4eaf8;letter-spacing:-0.02em;margin-bottom:10px;">EFActor</div>
-      <div style="font-family:'DM Mono',monospace;font-size:0.68rem;color:#9aa3be; line-height:1.85;margin-bottom:20px;">
+    <div class="app-card amber">
+      <div class="app-icon amber">🔬</div>
+      <div class="app-name">EFActor</div>
+      <div class="app-desc">
         Psychometric analysis platform. Runs KMO suitability checks,
         Exploratory Factor Analysis with multiple rotation options,
         Confirmatory Factor Analysis, and iterative auto-fix for problem variables.
       </div>
-      <div style="display:flex;flex-wrap:wrap;gap:6px;">
-        <span style="font-family:'DM Mono',monospace;font-size:0.54rem;letter-spacing:0.06em; text-transform:uppercase;padding:4px 10px;border-radius:6px; border:1px solid rgba(255,255,255,0.06);color:#4e576e;">Psychometrics</span>
-        <span style="font-family:'DM Mono',monospace;font-size:0.54rem;letter-spacing:0.06em; text-transform:uppercase;padding:4px 10px;border-radius:6px; border:1px solid rgba(255,255,255,0.06);color:#4e576e;">EFA / CFA</span>
-        <span style="font-family:'DM Mono',monospace;font-size:0.54rem;letter-spacing:0.06em; text-transform:uppercase;padding:4px 10px;border-radius:6px; border:1px solid rgba(255,255,255,0.06);color:#4e576e;">Auto-Fix</span>
+      <div class="app-tags">
+        <span class="app-tag">Psychometrics</span>
+        <span class="app-tag">EFA / CFA</span>
+        <span class="app-tag">Auto-Fix</span>
       </div>
     </div>
 
