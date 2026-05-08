@@ -997,7 +997,7 @@ def render_home():
           </ul>
         </div>
         """, unsafe_allow_html=True)
-        st.link_button("Get Started →", "https://flutterwave.com/pay/bayantx360-starter", use_container_width=True)
+        st.link_button("Get Started →", "https://flutterwave.com/pay/tumvwsar2zi5", use_container_width=True)
 
     with pc2:
         st.markdown("""
@@ -1016,7 +1016,7 @@ def render_home():
           </ul>
         </div>
         """, unsafe_allow_html=True)
-        st.link_button("Buy Credits →", "https://flutterwave.com/pay/bayantx360-standard", use_container_width=True)
+        st.link_button("Buy Credits →", "https://flutterwave.com/pay/w08ixsaspudw", use_container_width=True)
 
     with pc3:
         st.markdown("""
@@ -1035,7 +1035,7 @@ def render_home():
           </ul>
         </div>
         """, unsafe_allow_html=True)
-        st.link_button("Buy Credits →", "https://flutterwave.com/pay/bayantx360-team", use_container_width=True)
+        st.link_button("Buy Credits →", "https://flutterwave.com/pay/rjsshar0wqlk", use_container_width=True)
 
     st.markdown("<br>", unsafe_allow_html=True)
 
