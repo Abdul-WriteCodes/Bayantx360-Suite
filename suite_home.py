@@ -985,8 +985,8 @@ def render_home():
         st.markdown("""
         <div class="price-card fi d3">
           <div class="price-plan">Starter</div>
-          <div class="price-amount"><span class="price-curr">.</span>$15</div>
-          <div class="price-credits">10 Suite Credits</div>
+          <div class="price-amount"><span class="price-curr">.</span>$8</div>
+          <div class="price-credits">5 Suite Credits</div>
           <div class="price-note">Works across all apps</div>
           <div class="price-divider"></div>
           <ul class="price-features">
@@ -1004,8 +1004,8 @@ def render_home():
         <div class="price-card featured fi d4">
           <span class="price-badge badge-pop">Most Popular</span>
           <div class="price-plan">Standard</div>
-          <div class="price-amount"><span class="price-curr">.</span>$30</div>
-          <div class="price-credits">25 Suite Credits</div>
+          <div class="price-amount"><span class="price-curr">.</span>$18</div>
+          <div class="price-credits">15 Suite Credits</div>
           <div class="price-note">Best value for active researchers</div>
           <div class="price-divider"></div>
           <ul class="price-features">
@@ -1023,8 +1023,8 @@ def render_home():
         <div class="price-card fi d5">
           <span class="price-badge badge-val">Best Value</span>
           <div class="price-plan">Pro</div>
-          <div class="price-amount"><span class="price-curr">.</span>$50</div>
-          <div class="price-credits">50 Suite Credits</div>
+          <div class="price-amount"><span class="price-curr">.</span>$30</div>
+          <div class="price-credits">30 Suite Credits</div>
           <div class="price-note">For teams and power researchers</div>
           <div class="price-divider"></div>
           <ul class="price-features">
