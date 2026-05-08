@@ -57,7 +57,7 @@ apply_suite_css()
 
 # ── Auth guard: redirect to suite home if not authenticated ───────────────────
 if not st.session_state.get("access_granted"):
-    st.switch_page("suite_home.py")
+    st.switch_page(st.session_state["_home_page"])
     st.stop()
 
 # Refresh live credit balance on every page load (paid users only)
@@ -641,7 +641,7 @@ with st.sidebar:
 
     # Back to suite
     if st.button("⬡ Back to Suite", use_container_width=True):
-        st.switch_page("suite_home.py")
+        st.switch_page(st.session_state["_home_page"])
 
     st.markdown("---")
     st.markdown('<div style="font-size:0.68rem;text-transform:uppercase;letter-spacing:0.12em;color:var(--muted);margin-bottom:8px;">Data Source</div>', unsafe_allow_html=True)
