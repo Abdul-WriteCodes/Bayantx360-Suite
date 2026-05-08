@@ -40,6 +40,12 @@ st.set_page_config(
 
 # ── Init session ───────────────────────────────────────────────────────────────
 init_session_state()
+# ── Deferred navigation (must run before any rendering) ───────────────────────
+# Buttons set st.session_state["_goto"] + st.rerun() instead of calling
+# st.switch_page() mid-render (which raises StreamlitAPIException on Cloud).
+_goto = st.session_state.pop("_goto", None)
+if _goto:
+    st.switch_page(_goto)
 
 # ═══════════════════════════════════════════════════════════════════════════════
 # LANDING PAGE CSS
@@ -754,7 +760,8 @@ if st.session_state.get("access_granted"):
                 key=f"launch_{app['name']}",
                 use_container_width=True,
             ):
-                st.switch_page(f"{app['page']}.py")
+                st.session_state["_goto"] = f"{app['page']}.py"
+                st.rerun()
             st.markdown("</div>", unsafe_allow_html=True)
 
     st.markdown("<br><br>", unsafe_allow_html=True)
@@ -871,92 +878,57 @@ st.markdown("""
 st.markdown("""
 <div style="max-width:1060px;margin:0 auto;padding:clamp(32px,5vw,64px) clamp(20px,5vw,48px);">
   <div style="text-align:center;margin-bottom:44px;">
-    <span style="font-family:'DM Mono',monospace;font-size:0.56rem;letter-spacing:0.22em;
-                 text-transform:uppercase;color:#4e576e;margin-bottom:12px;display:block;">
+    <span style="font-family:'DM Mono',monospace;font-size:0.56rem;letter-spacing:0.22em; text-transform:uppercase;color:#4e576e;margin-bottom:12px;display:block;">
       What's inside the suite
     </span>
-    <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:700;
-                font-size:clamp(1.6rem,3.2vw,2.2rem);color:#e4eaf8;letter-spacing:-0.03em;margin:0;">
+    <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:700; font-size:clamp(1.6rem,3.2vw,2.2rem);color:#e4eaf8;letter-spacing:-0.03em;margin:0;">
       Three precision tools.<br><span style="color:#00e5c8;">One unified platform.</span>
     </div>
   </div>
   <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:18px;">
 
-    <div style="background:#10141f;border:1px solid rgba(255,255,255,0.06);border-radius:20px;
-                padding:28px 24px;position:relative;overflow:hidden;transition:transform 0.25s;">
-      <div style="width:48px;height:48px;border-radius:13px;display:flex;align-items:center;
-                  justify-content:center;font-size:1.4rem;margin-bottom:20px;
-                  background:rgba(0,229,200,0.1);border:1px solid rgba(0,229,200,0.2);">📐</div>
-      <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:1.05rem;
-                  color:#e4eaf8;letter-spacing:-0.02em;margin-bottom:10px;">PanelStatX</div>
-      <div style="font-family:'DM Mono',monospace;font-size:0.68rem;color:#9aa3be;
-                  line-height:1.85;margin-bottom:20px;">
+    <div style="background:#10141f;border:1px solid rgba(255,255,255,0.06);border-radius:20px; padding:28px 24px;position:relative;overflow:hidden;transition:transform 0.25s;">
+      <div style="width:48px;height:48px;border-radius:13px;display:flex;align-items:center; justify-content:center;font-size:1.4rem;margin-bottom:20px; background:rgba(0,229,200,0.1);border:1px solid rgba(0,229,200,0.2);">📐</div>
+      <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:1.05rem; color:#e4eaf8;letter-spacing:-0.02em;margin-bottom:10px;">PanelStatX</div>
+      <div style="font-family:'DM Mono',monospace;font-size:0.68rem;color:#9aa3be; line-height:1.85;margin-bottom:20px;">
         Production-grade panel econometrics. Run Fixed Effects, Random Effects,
         First-Difference, and Pooled OLS regressions with complete diagnostic suites
         and AI-powered interpretation.
       </div>
       <div style="display:flex;flex-wrap:wrap;gap:6px;">
-        <span style="font-family:'DM Mono',monospace;font-size:0.54rem;letter-spacing:0.06em;
-                     text-transform:uppercase;padding:4px 10px;border-radius:6px;
-                     border:1px solid rgba(255,255,255,0.06);color:#4e576e;">Econometrics</span>
-        <span style="font-family:'DM Mono',monospace;font-size:0.54rem;letter-spacing:0.06em;
-                     text-transform:uppercase;padding:4px 10px;border-radius:6px;
-                     border:1px solid rgba(255,255,255,0.06);color:#4e576e;">Panel Data</span>
-        <span style="font-family:'DM Mono',monospace;font-size:0.54rem;letter-spacing:0.06em;
-                     text-transform:uppercase;padding:4px 10px;border-radius:6px;
-                     border:1px solid rgba(255,255,255,0.06);color:#4e576e;">AI Explainer</span>
+        <span style="font-family:'DM Mono',monospace;font-size:0.54rem;letter-spacing:0.06em; text-transform:uppercase;padding:4px 10px;border-radius:6px; border:1px solid rgba(255,255,255,0.06);color:#4e576e;">Econometrics</span>
+        <span style="font-family:'DM Mono',monospace;font-size:0.54rem;letter-spacing:0.06em; text-transform:uppercase;padding:4px 10px;border-radius:6px; border:1px solid rgba(255,255,255,0.06);color:#4e576e;">Panel Data</span>
+        <span style="font-family:'DM Mono',monospace;font-size:0.54rem;letter-spacing:0.06em; text-transform:uppercase;padding:4px 10px;border-radius:6px; border:1px solid rgba(255,255,255,0.06);color:#4e576e;">AI Explainer</span>
       </div>
     </div>
 
-    <div style="background:#10141f;border:1px solid rgba(255,255,255,0.06);border-radius:20px;
-                padding:28px 24px;position:relative;overflow:hidden;transition:transform 0.25s;">
-      <div style="width:48px;height:48px;border-radius:13px;display:flex;align-items:center;
-                  justify-content:center;font-size:1.4rem;margin-bottom:20px;
-                  background:rgba(124,109,240,0.1);border:1px solid rgba(124,109,240,0.2);">🧬</div>
-      <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:1.05rem;
-                  color:#e4eaf8;letter-spacing:-0.02em;margin-bottom:10px;">DataSynthX</div>
-      <div style="font-family:'DM Mono',monospace;font-size:0.68rem;color:#9aa3be;
-                  line-height:1.85;margin-bottom:20px;">
+    <div style="background:#10141f;border:1px solid rgba(255,255,255,0.06);border-radius:20px; padding:28px 24px;position:relative;overflow:hidden;transition:transform 0.25s;">
+      <div style="width:48px;height:48px;border-radius:13px;display:flex;align-items:center; justify-content:center;font-size:1.4rem;margin-bottom:20px; background:rgba(124,109,240,0.1);border:1px solid rgba(124,109,240,0.2);">🧬</div>
+      <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:1.05rem; color:#e4eaf8;letter-spacing:-0.02em;margin-bottom:10px;">DataSynthX</div>
+      <div style="font-family:'DM Mono',monospace;font-size:0.68rem;color:#9aa3be; line-height:1.85;margin-bottom:20px;">
         Upload real data, generate high-fidelity synthetic equivalents.
         Validates output with correlation preservation scores,
         distribution similarity metrics, and a Synthetic Conformity Index.
       </div>
       <div style="display:flex;flex-wrap:wrap;gap:6px;">
-        <span style="font-family:'DM Mono',monospace;font-size:0.54rem;letter-spacing:0.06em;
-                     text-transform:uppercase;padding:4px 10px;border-radius:6px;
-                     border:1px solid rgba(255,255,255,0.06);color:#4e576e;">Synthetic Data</span>
-        <span style="font-family:'DM Mono',monospace;font-size:0.54rem;letter-spacing:0.06em;
-                     text-transform:uppercase;padding:4px 10px;border-radius:6px;
-                     border:1px solid rgba(255,255,255,0.06);color:#4e576e;">Privacy-Safe</span>
-        <span style="font-family:'DM Mono',monospace;font-size:0.54rem;letter-spacing:0.06em;
-                     text-transform:uppercase;padding:4px 10px;border-radius:6px;
-                     border:1px solid rgba(255,255,255,0.06);color:#4e576e;">Trust Metrics</span>
+        <span style="font-family:'DM Mono',monospace;font-size:0.54rem;letter-spacing:0.06em; text-transform:uppercase;padding:4px 10px;border-radius:6px; border:1px solid rgba(255,255,255,0.06);color:#4e576e;">Synthetic Data</span>
+        <span style="font-family:'DM Mono',monospace;font-size:0.54rem;letter-spacing:0.06em; text-transform:uppercase;padding:4px 10px;border-radius:6px; border:1px solid rgba(255,255,255,0.06);color:#4e576e;">Privacy-Safe</span>
+        <span style="font-family:'DM Mono',monospace;font-size:0.54rem;letter-spacing:0.06em; text-transform:uppercase;padding:4px 10px;border-radius:6px; border:1px solid rgba(255,255,255,0.06);color:#4e576e;">Trust Metrics</span>
       </div>
     </div>
 
-    <div style="background:#10141f;border:1px solid rgba(255,255,255,0.06);border-radius:20px;
-                padding:28px 24px;position:relative;overflow:hidden;transition:transform 0.25s;">
-      <div style="width:48px;height:48px;border-radius:13px;display:flex;align-items:center;
-                  justify-content:center;font-size:1.4rem;margin-bottom:20px;
-                  background:rgba(245,166,35,0.1);border:1px solid rgba(245,166,35,0.2);">🔬</div>
-      <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:1.05rem;
-                  color:#e4eaf8;letter-spacing:-0.02em;margin-bottom:10px;">EFActor</div>
-      <div style="font-family:'DM Mono',monospace;font-size:0.68rem;color:#9aa3be;
-                  line-height:1.85;margin-bottom:20px;">
+    <div style="background:#10141f;border:1px solid rgba(255,255,255,0.06);border-radius:20px; padding:28px 24px;position:relative;overflow:hidden;transition:transform 0.25s;">
+      <div style="width:48px;height:48px;border-radius:13px;display:flex;align-items:center; justify-content:center;font-size:1.4rem;margin-bottom:20px; background:rgba(245,166,35,0.1);border:1px solid rgba(245,166,35,0.2);">🔬</div>
+      <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:1.05rem; color:#e4eaf8;letter-spacing:-0.02em;margin-bottom:10px;">EFActor</div>
+      <div style="font-family:'DM Mono',monospace;font-size:0.68rem;color:#9aa3be; line-height:1.85;margin-bottom:20px;">
         Psychometric analysis platform. Runs KMO suitability checks,
         Exploratory Factor Analysis with multiple rotation options,
         Confirmatory Factor Analysis, and iterative auto-fix for problem variables.
       </div>
       <div style="display:flex;flex-wrap:wrap;gap:6px;">
-        <span style="font-family:'DM Mono',monospace;font-size:0.54rem;letter-spacing:0.06em;
-                     text-transform:uppercase;padding:4px 10px;border-radius:6px;
-                     border:1px solid rgba(255,255,255,0.06);color:#4e576e;">Psychometrics</span>
-        <span style="font-family:'DM Mono',monospace;font-size:0.54rem;letter-spacing:0.06em;
-                     text-transform:uppercase;padding:4px 10px;border-radius:6px;
-                     border:1px solid rgba(255,255,255,0.06);color:#4e576e;">EFA / CFA</span>
-        <span style="font-family:'DM Mono',monospace;font-size:0.54rem;letter-spacing:0.06em;
-                     text-transform:uppercase;padding:4px 10px;border-radius:6px;
-                     border:1px solid rgba(255,255,255,0.06);color:#4e576e;">Auto-Fix</span>
+        <span style="font-family:'DM Mono',monospace;font-size:0.54rem;letter-spacing:0.06em; text-transform:uppercase;padding:4px 10px;border-radius:6px; border:1px solid rgba(255,255,255,0.06);color:#4e576e;">Psychometrics</span>
+        <span style="font-family:'DM Mono',monospace;font-size:0.54rem;letter-spacing:0.06em; text-transform:uppercase;padding:4px 10px;border-radius:6px; border:1px solid rgba(255,255,255,0.06);color:#4e576e;">EFA / CFA</span>
+        <span style="font-family:'DM Mono',monospace;font-size:0.54rem;letter-spacing:0.06em; text-transform:uppercase;padding:4px 10px;border-radius:6px; border:1px solid rgba(255,255,255,0.06);color:#4e576e;">Auto-Fix</span>
       </div>
     </div>
 
