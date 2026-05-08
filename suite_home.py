@@ -985,12 +985,12 @@ def render_home():
         st.markdown("""
         <div class="price-card fi d3">
           <div class="price-plan">Starter</div>
-          <div class="price-amount"><span class="price-curr">$</span>10</div>
+          <div class="price-amount"><span class="price-curr">.</span>$15</div>
           <div class="price-credits">10 Suite Credits</div>
-          <div class="price-note">Works across all 3 apps</div>
+          <div class="price-note">Works across all apps</div>
           <div class="price-divider"></div>
           <ul class="price-features">
-            <li><span class="pf-check">✓</span>10 analysis runs across any app</li>
+            <li><span class="pf-check">✓</span>Unlimited analysis runs across any app</li>
             <li><span class="pf-check">✓</span>AI explainer unlocked</li>
             <li><span class="pf-check">✓</span>All export formats (DOCX, CSV, Excel)</li>
             <li><span class="pf-check">✓</span>Credits never expire</li>
@@ -1004,12 +1004,12 @@ def render_home():
         <div class="price-card featured fi d4">
           <span class="price-badge badge-pop">Most Popular</span>
           <div class="price-plan">Standard</div>
-          <div class="price-amount"><span class="price-curr">$</span>30</div>
-          <div class="price-credits">40 Suite Credits</div>
+          <div class="price-amount"><span class="price-curr">.</span>$30</div>
+          <div class="price-credits">25 Suite Credits</div>
           <div class="price-note">Best value for active researchers</div>
           <div class="price-divider"></div>
           <ul class="price-features">
-            <li><span class="pf-check">✓</span>40 analysis runs across any app</li>
+            <li><span class="pf-check">✓</span>Unlimited analysis runs across any app</li>
             <li><span class="pf-check">✓</span>AI explainer unlocked</li>
             <li><span class="pf-check">✓</span>All export formats (DOCX, CSV, Excel)</li>
             <li><span class="pf-check">✓</span>Credits never expire</li>
@@ -1022,13 +1022,13 @@ def render_home():
         st.markdown("""
         <div class="price-card fi d5">
           <span class="price-badge badge-val">Best Value</span>
-          <div class="price-plan">Team</div>
-          <div class="price-amount"><span class="price-curr">$</span>100</div>
-          <div class="price-credits">150 Suite Credits</div>
+          <div class="price-plan">Pro</div>
+          <div class="price-amount"><span class="price-curr">.</span>$50</div>
+          <div class="price-credits">50 Suite Credits</div>
           <div class="price-note">For teams and power researchers</div>
           <div class="price-divider"></div>
           <ul class="price-features">
-            <li><span class="pf-check">✓</span>150 analysis runs across any app</li>
+            <li><span class="pf-check">✓</span>Unlimited analysis runs across any app</li>
             <li><span class="pf-check">✓</span>AI explainer unlocked</li>
             <li><span class="pf-check">✓</span>All export formats (DOCX, CSV, Excel)</li>
             <li><span class="pf-check">✓</span>Credits never expire</li>
