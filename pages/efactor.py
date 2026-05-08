@@ -579,7 +579,7 @@ def generate_docx_report(original_df, cleaned_df, suitability, efa_result,
     _heading("Factor Loadings", level=2, color="#7c6df0")
     _table(["Variable"] + loadings.columns.tolist() + ["Communality"],
            [(([v] + [f"{loadings.loc[v,c]:.3f}" for c in loadings.columns] + [f"{communalities[v]:.3f}"]),
-             ([None]*len(loadings.columns+[None]) + ["#22d3a0" if communalities[v]>=0.5 else ("#f5a623" if communalities[v]>=0.3 else "#f05c7c")]))
+             ([None]*(len(loadings.columns)+1) + ["#22d3a0" if communalities[v]>=0.5 else ("#f5a623" if communalities[v]>=0.3 else "#f05c7c")]))
             for v in loadings.index])
     _heading("Variance Explained", level=2, color="#7c6df0")
     _table(["Factor","SS Loadings","Proportion Var","Cumulative Var"],
