@@ -885,15 +885,15 @@ def render_home():
       <div class="apps-grid">
 
         <div class="app-card teal">
-          <div class="app-icon teal">🆑️</div>
+          <div class="app-icon teal">⚡️</div>
           <div class="app-name">No Code</div>
           <div class="app-desc">
-            Run Advanced & Powerful Statistical Analysis Without Writing any Code.
+            Run advanced statistical analysis through an intuitive interface — without writing syntax, configuring environments, or learning complex software.
           </div>
           <div class="app-tags">
             <span class="app-tag">No Code</span>
             <span class="app-tag">No Syntax</span>
-            <span class="app-tag">User Friendly</span>
+            <span class="app-tag">Research-Friendly</span>
           </div>
         </div>
 
@@ -912,10 +912,11 @@ def render_home():
         </div>
 
         <div class="app-card amber">
-          <div class="app-icon amber">💰</div>
-          <div class="app-name">Lincense Fee-Free</div>
+          <div class="app-icon amber">💳</div>
+          <div class="app-name">License Fee-Free</div>
           <div class="app-desc">
-            Bayantx360 Suite requires no costly license fee. All Statistical models and tools can be used for free anytime, anywhere 
+            Skip costly annual subscriptions and restrictive academic licenses.
+            Access and use advanced statistical tools for free anytime. Only pay for exporting valuable data and results through a flexible credit-based,pay-as-you-go model.
           </div>
           <div class="app-tags">
             <span class="app-tag">No Monthly Subscription</span>
