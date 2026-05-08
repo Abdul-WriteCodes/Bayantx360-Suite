@@ -997,7 +997,7 @@ def render_home():
           </ul>
         </div>
         """, unsafe_allow_html=True)
-        st.link_button("Get Started →", "https://flutterwave.com/pay/tumvwsar2zi5", use_container_width=True)
+        st.link_button("Buy Credits →", "https://flutterwave.com/pay/tumvwsar2zi5", use_container_width=True)
 
     with pc2:
         st.markdown("""
@@ -1086,7 +1086,7 @@ def render_home():
 
         st.markdown("""
         <div class="gate-links">
-            <a href="https://x.com/bayantx360" target="_blank">👤 Get Access Key</a>
+            <a href="https://x.com/bayantx360" target="_blank">👤 Contact Sales</a>
             <span class="gate-sep">|</span>
             <a href="https://app.box.com/s/vw4c6u10bv0z8ngarzj73ej18t74e3wl" target="_blank">📋 User Guide</a>
             <span class="gate-sep">|</span>
