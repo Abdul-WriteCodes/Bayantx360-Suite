@@ -46,7 +46,7 @@ _pg = st.navigation(
     position="hidden",
 )
 
-_pg.run()
+#_pg.run()
 
 """
 _pg = st.navigation(
