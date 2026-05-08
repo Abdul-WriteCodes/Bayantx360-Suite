@@ -57,7 +57,7 @@ init_session_state()
 apply_suite_css()
 
 if not st.session_state.get("access_granted"):
-    st.switch_page("suite_home.py")
+    st.switch_page(st.session_state["_home_page"])
     st.stop()
 
 refresh_credits()
@@ -367,7 +367,7 @@ with st.sidebar:
     render_credit_hud()
 
     if st.button("⬡ Back to Suite", use_container_width=True):
-        st.switch_page("suite_home.py")
+        st.switch_page(st.session_state["_home_page"])
 
     st.markdown("---")
     st.markdown('<div style="font-size:0.68rem;text-transform:uppercase;letter-spacing:0.12em;color:var(--muted);margin-bottom:10px;">Upload Dataset</div>', unsafe_allow_html=True)
