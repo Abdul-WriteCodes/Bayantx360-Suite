@@ -38,6 +38,19 @@ from shared.auth import (
 # app-selector cards and deferred _goto pattern.
 _pg = st.navigation(
     [
+        st.Page("suite_home.py", title="Bayantx360 Suite", icon="🧠", default=True),
+        st.Page("pages/panelstatx.py", title="PanelStatX", icon="📐"),
+        st.Page("pages/datasynthx.py", title="DataSynthX", icon="🧬"),
+        st.Page("pages/efactor.py", title="EFActor", icon="🔬"),
+    ],
+    position="hidden",
+)
+
+_pg.run()
+
+"""
+_pg = st.navigation(
+    [
         st.Page("suite_home.py",        title="Bayantx360 Suite", icon="🧠", default=True),
         st.Page("pages/panelstatx.py",  title="PanelStatX",       icon="📐"),
         st.Page("pages/datasynthx.py",  title="DataSynthX",       icon="🧬"),
@@ -52,6 +65,7 @@ _pg = st.navigation(
 # is only needed to register all pages into the V2 page registry so
 # that st.switch_page() can resolve them by path on Streamlit Cloud.
 
+"""
 # ── Page config ────────────────────────────────────────────────────────────────
 st.set_page_config(
     page_title="Bayantx360 Suite",
@@ -736,7 +750,7 @@ if st.session_state.get("access_granted"):
             "btn":     "sel-btn-teal",
             "desc":    "Production-grade panel econometrics with Fixed Effects, Random Effects, and First-Difference estimators.",
             "features": ["OLS · FE · RE · First-Difference models", "Breusch-Pagan & Hausman tests", "Entity cross-section plots", "AI explainer (paid)", "DOCX report export (paid)"],
-            "page":    "pages/panelstatx",
+            "page":    "pages/panelstatx.py",
         },
         {
             "name":    "DataSynthX",
@@ -746,7 +760,7 @@ if st.session_state.get("access_granted"):
             "btn":     "sel-btn-purple",
             "desc":    "Statistical synthetic data generation with full trust-metric validation and conformity scoring.",
             "features": ["Auto data profiling", "Synthetic generation engine", "Correlation & distribution fidelity", "AI trust analysis (paid)", "CSV / Excel export (paid)"],
-            "page":    "pages/datasynthx",
+            "page":    "pages/datasynthx.py",
         },
         {
             "name":    "EFActor",
@@ -756,7 +770,7 @@ if st.session_state.get("access_granted"):
             "btn":     "sel-btn-amber",
             "desc":    "Psychometric analysis platform for Exploratory and Confirmatory Factor Analysis with auto-fix.",
             "features": ["KMO suitability & scree plot", "EFA with rotation (varimax etc.)", "CFA & fit indices", "Auto-fix problematic variables", "DOCX report export (paid)"],
-            "page":    "pages/efactor",
+            "page":    "pages/efactor.py",
         },
     ]
 
@@ -783,7 +797,8 @@ if st.session_state.get("access_granted"):
                 key=f"launch_{app['name']}",
                 use_container_width=True,
             ):
-                st.session_state["_goto"] = f"{app['page']}.py"
+                #st.session_state["_goto"] = f"{app['page']}.py"
+                st.session_state["_goto"] = app["page"]
                 st.rerun()
             st.markdown("</div>", unsafe_allow_html=True)
 
