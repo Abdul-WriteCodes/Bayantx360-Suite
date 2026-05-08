@@ -957,7 +957,7 @@ def render_home():
     with trial_col:
         st.markdown('<div class="trial-btn-zone">', unsafe_allow_html=True)
         free_trial_btn = st.button(
-            "⬡  Start Free Trial",
+            "⬡  Use Free Version",
             key="free_trial_btn",
             use_container_width=True,
         )
@@ -973,7 +973,7 @@ def render_home():
     st.markdown("""
     <div class="lp-pricing fi d5">
       <div class="section-head">
-        <div class="section-title">Simple, <em>transparent</em> pricing</div>
+        <div class="section-title">Upgrade & Unlock more Features: <em>Transparent</em> pricing</div>
         <span class="section-label">Pay-as-you-go credits · No monthly subscription · Credits never expire</span>
       </div>
     </div>
