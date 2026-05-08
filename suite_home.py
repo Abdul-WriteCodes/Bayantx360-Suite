@@ -899,14 +899,15 @@ def render_home():
 
         <div class="app-card purple">
           <div class="app-icon purple">🚀</div>
-          <div class="app-name">No Complex Installation</div>
+          <div class="app-name">Ready in Seconds</div>
           <div class="app-desc">
-            Gain Access and Use Powerful Statistical Models without Installing any Software or Package Dependencies
+            No installs, no dependencies, no setup. Open your browser. 
+            Eenter your key, and run production-grade statistical models from any device.
           </div>
           <div class="app-tags">
-            <span class="app-tag">No Heavy software Installation</span>
-            <span class="app-tag">No system dependencies</span>
-            <span class="app-tag">Friendly to use across platforms</span>
+            <span class="app-tag">Zero Setup</span>
+            <span class="app-tag">Cross-Platform</span>
+            <span class="app-tag">Browser-Native</span>
           </div>
         </div>
 
