@@ -30,32 +30,20 @@ from shared.auth import (
     is_trial,
 )
 
-# ── Explicit navigation registration (V2 MPA mode) ────────────────────────────
-# Must be called BEFORE set_page_config so Streamlit registers all pages
-# upfront. This switches from V1 (pages/ directory auto-discovery) to V2
-# (st.navigation), which is required for st.switch_page to work on
-# Streamlit Cloud. Sidebar nav is hidden — routing is via the custom
-# app-selector cards and deferred _goto pattern.
-_pg = st.navigation(
-    [
-        st.Page("suite_home.py",        title="Bayantx360 Suite", icon="🌐", default=True),
-        st.Page("pages/panelstatx.py",  title="PanelStatX",       icon="📐"),
-        st.Page("pages/datasynthx.py",  title="DataSynthX",       icon="🧬"),
-        st.Page("pages/efactor.py",     title="EFActor",          icon="🔬"),
-    ],
-    position="hidden",
-)
-# NOTE: _pg.run() is intentionally NOT called here.
-# suite_home.py is the entrypoint — its content renders inline below.
-# Sub-pages (panelstatx, datasynthx, efactor) render themselves when
-# navigated to via st.switch_page(). The st.navigation() call above
-# is only needed to register all pages into the V2 page registry so
-# that st.switch_page() can resolve them by path on Streamlit Cloud.
-
-# ── Page config ────────────────────────────────────────────────────────────────
+# ── Navigation: V1 auto-discovery (pages/ folder) ────────────────────────────
+# st.navigation() is intentionally NOT used here. Calling st.navigation()
+# without _pg.run() breaks st.switch_page() on Streamlit Cloud (V2 router
+# activates but never dispatches). Calling it WITH _pg.run() causes an
+# infinite exec loop because suite_home.py is both the entrypoint and a page.
+#
+# V1 auto-discovery (pages/ folder) is the correct approach for this app:
+# Streamlit Cloud discovers pages/panelstatx.py, pages/datasynthx.py, and
+# pages/efactor.py automatically, and st.switch_page("pages/X.py") routes
+# to them reliably. The sidebar is hidden via CSS in the style block below.
+# ── Page config — must come before any output ─────────────────────────────────
 st.set_page_config(
     page_title="Bayantx360 Suite",
-    page_icon="⬡",
+    page_icon="🌐",
     layout="wide",
     initial_sidebar_state="collapsed",
 )
@@ -66,6 +54,7 @@ init_session_state()
 # ── Deferred navigation (must run before any rendering) ───────────────────────
 # Buttons set st.session_state["_goto"] + st.rerun() instead of calling
 # st.switch_page() mid-render (which raises StreamlitAPIException on Cloud).
+# Path must be the string passed to st.Page() — e.g. "pages/panelstatx.py"
 _goto = st.session_state.pop("_goto", None)
 if _goto:
     st.switch_page(_goto)
@@ -941,7 +930,7 @@ st.html("""
     </div>
 
     <div class="app-card amber">
-      <div class="app-icon amber">🔬;</div>
+      <div class="app-icon amber">&#128302;</div>
       <div class="app-name">EFActor</div>
       <div class="app-desc">
         Psychometric analysis platform. Runs KMO suitability checks,
