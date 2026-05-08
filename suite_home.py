@@ -973,7 +973,7 @@ def render_home():
     st.markdown("""
     <div class="lp-pricing fi d5">
       <div class="section-head">
-        <div class="section-title">Buy Credits &<em>Access More</em> Features</div>
+        <div class="section-title">Buy Credits & <em>Access More</em> Features</div>
         <span class="section-label">Pay-as-you-go credits · No monthly subscription · Credits never expire</span>
       </div>
     </div>
