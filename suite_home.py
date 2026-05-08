@@ -941,7 +941,7 @@ st.html("""
     </div>
 
     <div class="app-card amber">
-      <div class="app-icon amber">&#128302;</div>
+      <div class="app-icon amber">🔬;</div>
       <div class="app-name">EFActor</div>
       <div class="app-desc">
         Psychometric analysis platform. Runs KMO suitability checks,
