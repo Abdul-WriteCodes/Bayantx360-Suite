@@ -38,7 +38,7 @@ from shared.auth import (
 # app-selector cards and deferred _goto pattern.
 _pg = st.navigation(
     [
-        st.Page("suite_home.py",        title="Bayantx360 Suite", icon="⬡", default=True),
+        st.Page("suite_home.py",        title="Bayantx360 Suite", icon="🧠", default=True),
         st.Page("pages/panelstatx.py",  title="PanelStatX",       icon="📐"),
         st.Page("pages/datasynthx.py",  title="DataSynthX",       icon="🧬"),
         st.Page("pages/efactor.py",     title="EFActor",          icon="🔬"),
