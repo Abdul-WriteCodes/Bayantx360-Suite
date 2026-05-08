@@ -879,7 +879,7 @@ def render_home():
       <div class="section-head">
         <span class="section-label">Why Bayantx360?</span>
         <div class="section-title">
-          Three precision tools.<br><em>One unified platform.</em>
+          Why Researchers, Students & Data Analysts are<br><em>Choosing Bayantx360 Suite.</em>
         </div>
       </div>
       <div class="apps-grid">
