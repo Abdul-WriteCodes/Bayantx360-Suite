@@ -834,7 +834,7 @@ def render_home():
 
       <div class="hero-eyebrow">
         <span class="dot-live"></span>
-        Bayantx360 Suite — Three Tools. One Key. Zero Friction.
+        Bayantx360 Suite — Data. Impact. Intelligence.
       </div>
 
       <h1 class="hero-h1">
@@ -877,7 +877,7 @@ def render_home():
     st.html("""
     <div class="apps-section fi d3">
       <div class="section-head">
-        <span class="section-label">What&#39;s inside the suite</span>
+        <span class="section-label">Why Bayantx360?</span>
         <div class="section-title">
           Three precision tools.<br><em>One unified platform.</em>
         </div>
@@ -885,47 +885,41 @@ def render_home():
       <div class="apps-grid">
 
         <div class="app-card teal">
-          <div class="app-icon teal">&#128208;</div>
-          <div class="app-name">PanelStatX</div>
+          <div class="app-icon teal">🆑️</div>
+          <div class="app-name">No Code</div>
           <div class="app-desc">
-            Production-grade panel econometrics. Run Fixed Effects, Random Effects,
-            First-Difference, and Pooled OLS regressions with complete diagnostic suites
-            and AI-powered interpretation.
+            Run Advanced & Powerful Statistical Analysis Without Writing any Code.
           </div>
           <div class="app-tags">
-            <span class="app-tag">Econometrics</span>
-            <span class="app-tag">Panel Data</span>
-            <span class="app-tag">AI Explainer</span>
+            <span class="app-tag">No Code</span>
+            <span class="app-tag">No Syntax</span>
+            <span class="app-tag">User Friendly</span>
           </div>
         </div>
 
         <div class="app-card purple">
-          <div class="app-icon purple">&#129514;</div>
-          <div class="app-name">DataSynthX</div>
+          <div class="app-icon purple">🚀</div>
+          <div class="app-name">No Complex Installation</div>
           <div class="app-desc">
-            Upload real data, generate high-fidelity synthetic equivalents.
-            Validates output with correlation preservation scores,
-            distribution similarity metrics, and a Synthetic Conformity Index.
+            Gain Access and Use Powerful Statistical Models without Installing any Software or Package Dependencies
           </div>
           <div class="app-tags">
-            <span class="app-tag">Synthetic Data</span>
-            <span class="app-tag">Privacy-Safe</span>
-            <span class="app-tag">Trust Metrics</span>
+            <span class="app-tag">No Heavy software Installation</span>
+            <span class="app-tag">No system dependencies</span>
+            <span class="app-tag">Friendly to use across platforms</span>
           </div>
         </div>
 
         <div class="app-card amber">
-          <div class="app-icon amber">&#128302;</div>
-          <div class="app-name">EFActor</div>
+          <div class="app-icon amber">💰</div>
+          <div class="app-name">Lincense Fee-Free</div>
           <div class="app-desc">
-            Psychometric analysis platform. Runs KMO suitability checks,
-            Exploratory Factor Analysis with multiple rotation options,
-            Confirmatory Factor Analysis, and iterative auto-fix for problem variables.
+            Bayantx360 Suite requires no costly license fee. All Statistical models and tools can be used for free anytime, anywhere 
           </div>
           <div class="app-tags">
-            <span class="app-tag">Psychometrics</span>
-            <span class="app-tag">EFA / CFA</span>
-            <span class="app-tag">Auto-Fix</span>
+            <span class="app-tag">No Monthly Subscription</span>
+            <span class="app-tag">Credit-based</span>
+            <span class="app-tag">Pay-As-You-Go</span>
           </div>
         </div>
 
