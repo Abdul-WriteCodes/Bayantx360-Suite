@@ -43,9 +43,10 @@ init_session_state()
 # ── Deferred navigation (must run before any rendering) ───────────────────────
 # Buttons set st.session_state["_goto"] + st.rerun() instead of calling
 # st.switch_page() mid-render (which raises StreamlitAPIException on Cloud).
-_goto = st.session_state.pop("_goto", None)
+_goto = st.session_state.get("_goto")
 if _goto:
-    st.switch_page(_goto)
+    del st.session_state["_goto"]
+    st.switch_page(st.Page(_goto))
 
 # ═══════════════════════════════════════════════════════════════════════════════
 # LANDING PAGE CSS
@@ -683,9 +684,9 @@ if st.session_state.get("access_granted"):
     <div class="selector-wrap lp-wrap">
       <div class="selector-header fi d2">
         <span class="selector-greeting">⬡ Bayantx360 Suite — App Selector</span>
-        <div class="selector-title">Which tool are you<br>working with today?</div>
+        <div class="selector-title">Which tool are you<br/>working with today?</div>
         <p class="selector-sub">
-            Your single access key works across the entire suite.<br>
+            Your single access key works across the entire suite.<br/>
             Credits are shared — usage is reflected in real time.
         </p>
       </div>
@@ -882,7 +883,7 @@ st.markdown("""
       What's inside the suite
     </span>
     <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:700; font-size:clamp(1.6rem,3.2vw,2.2rem);color:#e4eaf8;letter-spacing:-0.03em;margin:0;">
-      Three precision tools.<br><span style="color:#00e5c8;">One unified platform.</span>
+      Three precision tools.<br/><span style="color:#00e5c8;">One unified platform.</span>
     </div>
   </div>
   <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:18px;">
@@ -945,7 +946,7 @@ st.markdown("""
     </span>
     <div class="trial-title">Try the <em>Suite</em> Free</div>
     <p class="trial-desc">
-        All three tools. Full analysis. Zero cost.<br>
+        All three tools. Full analysis. Zero cost.<br/>
         Upgrade a paid plan when you need to export results or unlock AI interpretation.
     </p>
     <div class="trial-limits">
