@@ -798,7 +798,7 @@ with tab3:
                                 temperature=0.5, max_tokens=600,
                             )
                             explanation = resp.choices[0].message.content.strip()
-                            handle_credit_deduction(1)
+                            handle_credit_deduction(1, app="DataSynthX", action="AI Trust Analysis")
                             st.session_state.ai_explanation   = explanation
                             st.session_state.ai_use_case_saved = use_case or "inferred from columns"
                             st.rerun()
@@ -926,7 +926,7 @@ with tab4:
                             if st.download_button(label, data=data, file_name=fname, mime=mime,
                                                   key=key, use_container_width=True):
                                 if dl_cost > 0:
-                                    handle_credit_deduction(dl_cost)
+                                    handle_credit_deduction(dl_cost, app="DataSynthX", action=f"Export ({fmt})")
                                     st.rerun()
                             if dl_cost == 0:
                                 st.caption("No credit deducted · under 100 rows")
