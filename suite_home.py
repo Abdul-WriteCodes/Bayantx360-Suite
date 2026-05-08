@@ -38,7 +38,7 @@ from shared.auth import (
 # app-selector cards and deferred _goto pattern.
 _pg = st.navigation(
     [
-        st.Page("suite_home.py",        title="Bayantx360 Suite", icon="🌐", default=True),
+        st.Page("suite_home.py",        title="Bayantx360 Suite", icon="⬡", default=True),
         st.Page("pages/panelstatx.py",  title="PanelStatX",       icon="📐"),
         st.Page("pages/datasynthx.py",  title="DataSynthX",       icon="🧬"),
         st.Page("pages/efactor.py",     title="EFActor",          icon="🔬"),
@@ -897,19 +897,21 @@ st.markdown("""
 </div>
 """, unsafe_allow_html=True)
 
-# Apps showcase — uses CSS classes defined in the style block above
-st.markdown("""
+# Apps showcase — st.html() bypasses the react-markdown / rehype-raw pipeline
+# entirely, rendering via DOMPurify directly. This avoids the lazy-load race
+# where rehype-raw hasn't mounted yet and raw HTML nodes fall back to escaped text.
+st.html("""
 <div class="apps-section fi d3">
   <div class="section-head">
-    <span class="section-label">What's inside the suite</span>
+    <span class="section-label">What&#39;s inside the suite</span>
     <div class="section-title">
-      Three precision tools.<br/><em>One unified platform.</em>
+      Three precision tools.<br><em>One unified platform.</em>
     </div>
   </div>
   <div class="apps-grid">
 
     <div class="app-card teal">
-      <div class="app-icon teal">📐</div>
+      <div class="app-icon teal">&#128208;</div>
       <div class="app-name">PanelStatX</div>
       <div class="app-desc">
         Production-grade panel econometrics. Run Fixed Effects, Random Effects,
@@ -924,7 +926,7 @@ st.markdown("""
     </div>
 
     <div class="app-card purple">
-      <div class="app-icon purple">🧬</div>
+      <div class="app-icon purple">&#129514;</div>
       <div class="app-name">DataSynthX</div>
       <div class="app-desc">
         Upload real data, generate high-fidelity synthetic equivalents.
@@ -939,7 +941,7 @@ st.markdown("""
     </div>
 
     <div class="app-card amber">
-      <div class="app-icon amber">🔬</div>
+      <div class="app-icon amber">&#128302;</div>
       <div class="app-name">EFActor</div>
       <div class="app-desc">
         Psychometric analysis platform. Runs KMO suitability checks,
@@ -955,7 +957,7 @@ st.markdown("""
 
   </div>
 </div>
-""", unsafe_allow_html=True)
+""")
 
 # Free Trial section
 st.markdown("""
