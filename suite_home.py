@@ -804,7 +804,7 @@ def render_home():
             </div>
         </div>
         <div class="nav-right">
-            <span class="nav-tag">3 Specialised Tools</span>
+            <span class="nav-tag">3+ Specialised Tools</span>
             <span class="nav-tag nav-tag-live"><span class="dot-live"></span>v2.0 Live</span>
         </div>
     </nav>
@@ -851,7 +851,7 @@ def render_home():
 
       <div class="hero-stats">
         <div class="hs-block">
-          <div class="hs-num">3</div>
+          <div class="hs-num">3+</div>
           <div class="hs-label">Specialised Tools</div>
         </div>
         <div class="hs-block">
@@ -879,7 +879,7 @@ def render_home():
       <div class="section-head">
         <span class="section-label">Why Bayantx360?</span>
         <div class="section-title">
-          Why Researchers, Students & Data Analysts are<br><em>Choosing Bayantx360 Suite.</em>
+          Why Researchers, Students & Data Analysts are choosing<br><em>Bayantx360 Suite.</em>
         </div>
       </div>
       <div class="apps-grid">
