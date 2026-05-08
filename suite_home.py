@@ -897,7 +897,7 @@ st.markdown("""
 </div>
 """, unsafe_allow_html=True)
 
-"""
+
 # Apps showcase — fully inline-styled (no class names) so Streamlit won't sanitise
 st.markdown("""
 <div style="max-width:1060px;margin:0 auto;padding:clamp(32px,5vw,64px) clamp(20px,5vw,48px);">
