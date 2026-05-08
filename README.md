@@ -19,7 +19,7 @@ bayantx360_suite/
 │   ├── auth.py                ← Unified auth + credit engine (single source of truth)
 │   └── theme.py               ← Suite CSS + Plotly theme (imported by all apps)
 │
-├── apps/
+├── pages/
 │   ├── __init__.py
 │   ├── panelstatx.py          ← Panel Econometrics app
 │   ├── datasynthx.py          ← Synthetic Data app
@@ -106,7 +106,7 @@ The suite replaces all of that with:
 
 The architecture is designed for zero-friction expansion:
 
-1. Create `apps/newapp.py`
+1. Create `pages/newapp.py`
 2. Add two import lines at the top:
    ```python
    from shared.auth import init_session_state, refresh_credits, render_credit_hud, ...
