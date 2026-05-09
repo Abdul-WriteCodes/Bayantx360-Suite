@@ -816,7 +816,7 @@ def render_home():
             </div>
         </div>
         <div class="nav-right">
-            <span class="nav-tag">3+ Specialised Tools</span>
+            <span class="nav-tag">4+ Specialised Tools</span>
             <span class="nav-tag nav-tag-live"><span class="dot-live"></span>v2.0 Live</span>
         </div>
     </nav>
@@ -856,14 +856,14 @@ def render_home():
       </h1>
 
       <p class="hero-sub">
-        <strong>PanelStatX, DataSynthX, and EFActor</strong> — unified under a single access key
+        <strong>PanelStatX, DataSynthX, DataCleanX, EFActor</strong> — unified under a single access key
         with a shared credit balance. Run econometric models, generate synthetic data, and
         conduct psychometric analysis without switching platforms or managing separate accounts.
       </p>
 
       <div class="hero-stats">
         <div class="hs-block">
-          <div class="hs-num">3+</div>
+          <div class="hs-num">4+</div>
           <div class="hs-label">Specialised Tools</div>
         </div>
         <div class="hs-block">
