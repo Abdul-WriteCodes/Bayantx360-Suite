@@ -731,9 +731,21 @@ def render_home():
                 "features": ["KMO suitability & scree plot", "EFA with rotation (varimax etc.)", "CFA & fit indices", "Auto-fix problematic variables", "DOCX report export (paid)"],
                 "page_obj": st.session_state["_efactor_page"],
             },
+            
+            {
+                "name":     "DataCleanX",
+                "icon":     "🧹",
+                "color":    "teal",
+                "check":    "sel-check-teal",
+                "btn":      "sel-btn-teal",
+                "desc":     "Automated data cleaning with smart profiling, missing-value imputation, outlier management, and a full audit log.",
+                "features": ["Data Health Score (0–100)", "Auto-Clean mode", "Outlier visualisation & capping", "Column standardisation", "CSV / Excel + Audit Log export (paid)"],
+                "page_obj": st.session_state["_datacleanx_page"],
+            },
+          
         ]
 
-        cols = st.columns(3, gap="medium")
+        cols = st.columns(4, gap="medium")
 
         for col, app in zip(cols, APPS):
             with col:
@@ -804,7 +816,7 @@ def render_home():
             </div>
         </div>
         <div class="nav-right">
-            <span class="nav-tag">3+ Specialised Tools</span>
+            <span class="nav-tag">4+ Specialised Tools</span>
             <span class="nav-tag nav-tag-live"><span class="dot-live"></span>v2.0 Live</span>
         </div>
     </nav>
@@ -844,14 +856,14 @@ def render_home():
       </h1>
 
       <p class="hero-sub">
-        <strong>PanelStatX, DataSynthX, and EFActor</strong> — unified under a single access key
+        <strong>PanelStatX, DataSynthX, DataCleanX, EFActor</strong> — unified under a single access key
         with a shared credit balance. Run econometric models, generate synthetic data, and
         conduct psychometric analysis without switching platforms or managing separate accounts.
       </p>
 
       <div class="hero-stats">
         <div class="hs-block">
-          <div class="hs-num">3+</div>
+          <div class="hs-num">4+</div>
           <div class="hs-label">Specialised Tools</div>
         </div>
         <div class="hs-block">
@@ -1122,9 +1134,10 @@ _home_page      = st.Page(render_home,            title="Bayantx360 Suite", icon
 _panelstatx_page = st.Page("pages/panelstatx.py",  title="PanelStatX",       icon="📐")
 _datasynthx_page = st.Page("pages/datasynthx.py",  title="DataSynthX",       icon="🧬")
 _efactor_page    = st.Page("pages/efactor.py",     title="EFActor",          icon="🔬")
-
+_datacleanx_page    = st.Page("pages/datacleanx.py",     title="DataCleanX",          icon="🧹")
+ 
 _pg = st.navigation(
-    [_home_page, _panelstatx_page, _datasynthx_page, _efactor_page],
+    [_home_page, _panelstatx_page, _datasynthx_page, _efactor_page, datacleanx_page],
     position="hidden",
 )
 
@@ -1141,5 +1154,6 @@ st.session_state["_home_page"]       = _home_page
 st.session_state["_panelstatx_page"] = _panelstatx_page
 st.session_state["_datasynthx_page"] = _datasynthx_page
 st.session_state["_efactor_page"]    = _efactor_page
+st.session_state["_datacleanx_page"]    = _datacleanx_page
 
 _pg.run()

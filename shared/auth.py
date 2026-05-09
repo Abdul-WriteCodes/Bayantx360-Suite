@@ -68,6 +68,10 @@ SUITE_SESSION_KEYS = [
     "df", "results", "ai_explanation", "model_type",
     "authenticated", "key_owner", "key_plan",
     "efa_result", "cfa_result", "synth_df",
+    # per-app state cleared on sign-out — DataCleanX
+    "clean_original_df", "clean_working_df", "clean_profile",
+    "clean_audit_log", "clean_status", "auto_clean_done",
+    "outlier_decisions", "col_rename_map",
 ]
 
 
