@@ -72,7 +72,9 @@ for key, default in [
     ("auto_clean_done",      False),
     ("outlier_decisions",    {}),
     ("col_rename_map",       {}),
-    ("clean_has_changes",    False),   # FIX B3: tracks whether any transformation has been applied
+    ("clean_has_changes",    False),   # tracks whether any transformation has been applied
+    ("clean_last_op_msg",   None),    # (type, message) for post-rerun feedback toast
+    ("_uploaded_file_id",   None),    # tracks file identity to avoid spurious resets
 ]:
     if key not in st.session_state:
         st.session_state[key] = default
@@ -139,10 +141,36 @@ def load_data(file_bytes: bytes, file_name: str) -> pd.DataFrame:
         return pd.read_excel(buf, engine="xlrd")
     raise ValueError(f"Unsupported file type: {file_name}")
 
-def add_log(entry: str):
+def add_log(entry: str, feedback: str = None):
+    """
+    Append to the audit log, mark changes, and optionally queue a
+    feedback toast that will be shown after the next st.rerun().
+    Pass feedback=None to auto-derive it from the log entry.
+    """
     if entry:
         st.session_state.clean_audit_log.append(entry)
-        st.session_state.clean_has_changes = True   # FIX B3/B4: mark that changes exist
+        st.session_state.clean_has_changes = True
+        msg = feedback if feedback is not None else entry
+        st.session_state.clean_last_op_msg = ("success", msg)
+    else:
+        # Operation produced no log entry → nothing changed
+        st.session_state.clean_last_op_msg = ("info", "No changes made — data already satisfies this condition.")
+
+def show_op_feedback():
+    """
+    Render and clear the deferred operation feedback message.
+    Call once near the top of Tab 2, after st.rerun() has fired.
+    """
+    msg_tuple = st.session_state.get("clean_last_op_msg")
+    if msg_tuple:
+        kind, text = msg_tuple
+        st.session_state.clean_last_op_msg = None   # consume it
+        if kind == "success":
+            st.success(f"✓ {text}", icon="✅")
+        elif kind == "info":
+            st.info(text, icon="ℹ️")
+        elif kind == "error":
+            st.error(text)
 
 def recompute_profile():
     if st.session_state.clean_working_df is not None:
@@ -556,18 +584,27 @@ with st.sidebar:
         label_visibility="collapsed",
     )
     if uploaded_file is not None:
-        file_bytes = uploaded_file.read()
-        if file_bytes:
-            st.session_state.uploaded_file_bytes = file_bytes
-            st.session_state.uploaded_file_name  = uploaded_file.name
-            # Reset all state on new file upload
-            st.session_state.clean_original_df = None
-            st.session_state.clean_working_df  = None
-            st.session_state.clean_profile     = None
-            st.session_state.clean_audit_log   = []
-            st.session_state.auto_clean_done   = False
-            st.session_state.outlier_decisions = {}
-            st.session_state.clean_has_changes = False   # FIX B3: reset on new file
+        # Only reset state when the file identity changes (new name or size).
+        # Without this guard the uploader fires on every rerun, which re-reads
+        # the file and wipes clean_working_df — making every operation appear
+        # to have no effect because the session state gets reset right after
+        # the button writes to it.
+        _incoming_id = f"{uploaded_file.name}:{uploaded_file.size}"
+        if st.session_state.get("_uploaded_file_id") != _incoming_id:
+            file_bytes = uploaded_file.read()
+            if file_bytes:
+                st.session_state._uploaded_file_id  = _incoming_id
+                st.session_state.uploaded_file_bytes = file_bytes
+                st.session_state.uploaded_file_name  = uploaded_file.name
+                # Reset all working state for the new file
+                st.session_state.clean_original_df = None
+                st.session_state.clean_working_df  = None
+                st.session_state.clean_profile     = None
+                st.session_state.clean_audit_log   = []
+                st.session_state.auto_clean_done   = False
+                st.session_state.outlier_decisions = {}
+                st.session_state.clean_has_changes = False
+                st.session_state.clean_last_op_msg = None
 
     st.markdown("---")
 
@@ -626,7 +663,8 @@ with st.sidebar:
             "clean_original_df", "clean_working_df", "clean_profile",
             "clean_audit_log", "clean_status", "uploaded_file_bytes",
             "uploaded_file_name", "auto_clean_done", "outlier_decisions",
-            "col_rename_map", "clean_has_changes",
+            "col_rename_map", "clean_has_changes", "clean_last_op_msg",
+            "_uploaded_file_id",
         ]:
             st.session_state.pop(k, None)
         st.rerun()
@@ -856,6 +894,9 @@ with tab1:
 # ═══════════════════════════════════════════════════════════════════════════════
 
 with tab2:
+    # Show deferred feedback from the previous operation (set before st.rerun())
+    show_op_feedback()
+
     if auto_clean_mode:
         st.markdown("""
         <div style="background:rgba(0,229,200,0.04);border:1px solid rgba(0,229,200,0.2);
@@ -887,7 +928,7 @@ with tab2:
         if st.button("Remove Duplicates", key="rm_dup"):
             new_df, log = ColumnStandardizer.drop_duplicates(working)
             st.session_state.clean_working_df = new_df
-            add_log(log)
+            add_log(log, feedback=log if log else None)
             recompute_profile()
             st.rerun()
 
