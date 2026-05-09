@@ -579,7 +579,7 @@ def generate_docx_report(original_df, cleaned_df, suitability, efa_result,
     _heading("Factor Loadings", level=2, color="#7c6df0")
     _table(["Variable"] + loadings.columns.tolist() + ["Communality"],
            [(([v] + [f"{loadings.loc[v,c]:.3f}" for c in loadings.columns] + [f"{communalities[v]:.3f}"]),
-             ([None]*len(loadings.columns+[None]) + ["#22d3a0" if communalities[v]>=0.5 else ("#f5a623" if communalities[v]>=0.3 else "#f05c7c")]))
+             ([None]*(len(loadings.columns)+1) + ["#22d3a0" if communalities[v]>=0.5 else ("#f5a623" if communalities[v]>=0.3 else "#f05c7c")]))
             for v in loadings.index])
     _heading("Variance Explained", level=2, color="#7c6df0")
     _table(["Factor","SS Loadings","Proportion Var","Cumulative Var"],
@@ -1159,7 +1159,7 @@ else:
                 st.link_button("Top up →", "https://x.com/bayantx360", use_container_width=True)
             else:
                 if st.button(f"⬇ Download Cleaned Data ({cost_clean} cr)", use_container_width=True, key="dl_clean_btn"):
-                    handle_credit_deduction(cost_clean)
+                    handle_credit_deduction(cost_clean, app="EFActor", action="Cleaned Data Export")
                     st.download_button("⬇ cleaned_data.csv",
                                        data=S.df_working.to_csv(index=False).encode("utf-8"),
                                        file_name="efactor_cleaned_data.csv", mime="text/csv",
@@ -1176,7 +1176,7 @@ else:
                     st.link_button("Top up →", "https://x.com/bayantx360", use_container_width=True)
                 else:
                     if st.button(f"⬇ Download Synthetic Data ({cost_syn} cr)", use_container_width=True, key="dl_syn_btn"):
-                        handle_credit_deduction(cost_syn)
+                        handle_credit_deduction(cost_syn, app="EFActor", action="Synthetic Data Export")
                         st.download_button(f"⬇ synthetic_{syn_label}.csv",
                                            data=syn_export.to_csv(index=False).encode("utf-8"),
                                            file_name=f"efactor_synthetic_{syn_label}.csv", mime="text/csv",
@@ -1203,7 +1203,7 @@ else:
                                 cfa_result=S.cfa_result, fit_assessment=S.fit_assessment,
                                 cfa_thresholds=cfa_thresholds, synthetic_validation=S.syn_validation,
                                 model_str=S.cfa_result.get("model_str",""))
-                        handle_credit_deduction(REPORT_COST)
+                        handle_credit_deduction(REPORT_COST, app="EFActor", action="DOCX Report Export")
                         st.success(f"✓ Report ready. {REPORT_COST} credit deducted.")
                     if S.report_docx:
                         st.download_button("⬇ efactor_report.docx", data=S.report_docx,
@@ -1233,7 +1233,7 @@ else:
                         zf.writestr("efa_loadings.csv", S.efa_result["loadings"].round(4).to_csv())
                         zf.writestr("efa_communalities.csv", S.efa_result["communalities"].round(4).to_frame().to_csv())
                 zip_buffer.seek(0)
-                handle_credit_deduction(zip_cost)
+                handle_credit_deduction(zip_cost, app="EFActor", action="Full ZIP Export")
                 ts_str = datetime.now().strftime("%Y%m%d_%H%M")
                 st.download_button("⬇ efactor_bundle.zip", data=zip_buffer.getvalue(),
                                    file_name=f"efactor_bundle_{ts_str}.zip", mime="application/zip", key="dl_zip_actual")

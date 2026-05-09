@@ -973,7 +973,7 @@ with tab_results:
                         mime="application/vnd.openxmlformats-officedocument.wordprocessingml.document",
                         use_container_width=True, type="primary", disabled=dl_disabled,
                     ):
-                        handle_credit_deduction(1)
+                        handle_credit_deduction(1, app="PanelStatX", action="DOCX Report Export")
                         st.rerun()
                     if dl_disabled:
                         st.caption("⚠ No credits remaining.")
@@ -1166,7 +1166,7 @@ Coefficients:
                     with st.spinner("AI model analysing results…"):
                         explanation = call_openai(sys_prompt, f"Explain these results:\n\n{context}")
                         if not explanation.startswith(("OpenAI API key", "Request failed")):
-                            handle_credit_deduction(1)
+                            handle_credit_deduction(1, app="PanelStatX", action="AI Explainer")
                         st.session_state.ai_explanation = explanation
                         st.rerun()
                 if ai_disabled:
@@ -1181,7 +1181,7 @@ Coefficients:
                     with st.spinner("Thinking…"):
                         answer = call_openai(sys_prompt, f"Results:\n\n{context}\n\nQuestion: {custom_q}")
                         if not answer.startswith(("OpenAI API key", "Request failed")):
-                            handle_credit_deduction(1)
+                            handle_credit_deduction(1, app="PanelStatX", action="AI Custom Question")
                         st.session_state.ai_explanation = answer
                         st.rerun()
                 if ask_disabled:

@@ -33,6 +33,8 @@ All apps import:
 
 from __future__ import annotations
 
+from datetime import datetime, timezone
+
 import streamlit as st
 from google.oauth2.service_account import Credentials
 import gspread
@@ -44,10 +46,12 @@ GSHEET_SCOPES = [
 ]
 
 SHEET_NAME       = "Sheet1"
+LOG_TAB          = "ActivityLog"
 COL_KEY          = "Key"
 COL_CREDITS      = "Credits"
 COL_DATE         = "DatePurchased"
 COL_EMAIL        = "Email"
+COL_STATUS       = "Status"
 REQUIRED_HEADERS = [COL_KEY, COL_CREDITS, COL_DATE, COL_EMAIL]
 
 # All session keys the suite uses — used for clean logout / reset
@@ -124,6 +128,7 @@ def lookup_key(access_key: str) -> dict | None:
                     "credits":        int(row.get(COL_CREDITS, 0)),
                     "date_purchased": str(row.get(COL_DATE, "")),
                     "email":          str(row.get(COL_EMAIL, "")),
+                    "status":         str(row.get(COL_STATUS, "ACTIVE")).strip().upper(),
                 }
         return None
     except Exception as e:
@@ -252,6 +257,11 @@ def process_key_login(entered_key: str) -> None:
 
     if record is None:
         st.session_state.access_error = "Invalid access key. Please try again."
+    elif record.get("status") == "REVOKED":
+        st.session_state.access_error = (
+            "This access key has been revoked. "
+            "Please contact support if you believe this is an error."
+        )
     elif record["credits"] <= 0:
         st.session_state.access_error = (
             "Your credits have been exhausted. "
@@ -351,11 +361,60 @@ def render_credit_hud():
         st.sidebar.warning("⚠ No credits remaining. Exports and AI Explainer require credits.")
 
 
-def handle_credit_deduction(amount: int = 1) -> int:
+def log_activity(app: str, action: str, credits_used: int = 1) -> None:
     """
-    Deduct credits and update session + deferred notification.
+    Append one usage event to the ActivityLog sheet tab.
+    Call immediately after a successful credit deduction.
+    Silent on failure — never blocks the user flow.
+
+    Args:
+        app          — "PanelStatX" | "DataSynthX" | "EFActor"
+        action       — human-readable label, e.g. "AI Explainer", "DOCX Export"
+        credits_used — number of credits deducted for this action
+    """
+    if is_trial():
+        return  # trial users have no row and no credits to log
+
+    try:
+        gc       = _get_gsheet_client()
+        sheet_id = st.secrets["BAYANTX_SHEET_ID"]
+        sh       = gc.open_by_key(sheet_id)
+
+        try:
+            ws = sh.worksheet(LOG_TAB)
+        except gspread.WorksheetNotFound:
+            ws = sh.add_worksheet(title=LOG_TAB, rows=5000, cols=6)
+            ws.append_row(
+                ["Timestamp", "App", "Key", "Email", "Action", "Credits"],
+                value_input_option="USER_ENTERED",
+            )
+
+        timestamp = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M:%S")
+        ws.append_row(
+            [
+                timestamp,
+                app,
+                st.session_state.get("user_key",   ""),
+                st.session_state.get("user_email",  ""),
+                action,
+                credits_used,
+            ],
+            value_input_option="USER_ENTERED",
+        )
+    except Exception:
+        pass  # logging must never crash the app
+
+
+def handle_credit_deduction(amount: int = 1, app: str = "", action: str = "") -> int:
+    """
+    Deduct credits, update session + deferred notification, and log the event.
     Returns new credit balance.
     Safe to call from any app — handles trial guard internally.
+
+    Args:
+        amount  — credits to deduct (default 1)
+        app     — app name for activity log, e.g. "PanelStatX"
+        action  — action label for activity log, e.g. "AI Explainer"
     """
     if is_trial():
         return 0   # trial users are never deducted
@@ -371,5 +430,9 @@ def handle_credit_deduction(amount: int = 1) -> int:
         st.session_state._credit_msg = ("warn", f"⚠ Only {new_credits} credit(s) remaining.")
     else:
         st.session_state._credit_msg = None
+
+    # Log to ActivityLog sheet if caller supplied context
+    if app and action:
+        log_activity(app=app, action=action, credits_used=amount)
 
     return new_credits
