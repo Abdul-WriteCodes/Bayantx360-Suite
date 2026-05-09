@@ -1137,7 +1137,7 @@ _efactor_page    = st.Page("pages/efactor.py",     title="EFActor",          ico
 _datacleanx_page    = st.Page("pages/datacleanx.py",     title="DataCleanX",          icon="🧹")
  
 _pg = st.navigation(
-    [_home_page, _panelstatx_page, _datasynthx_page, _efactor_page, datacleanx_page],
+    [_home_page, _panelstatx_page, _datasynthx_page, _efactor_page, _datacleanx_page],
     position="hidden",
 )
 
