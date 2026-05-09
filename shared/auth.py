@@ -73,6 +73,7 @@ SUITE_SESSION_KEYS = [
     "clean_audit_log", "clean_status", "auto_clean_done",
     "outlier_decisions", "col_rename_map",
     "clean_has_changes", "clean_last_op_msg", "_uploaded_file_id",
+    "_dcx_session_user",
 ]
 
 
