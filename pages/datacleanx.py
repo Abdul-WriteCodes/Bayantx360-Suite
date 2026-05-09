@@ -1217,7 +1217,8 @@ with tab4:
             """, unsafe_allow_html=True)
             _, uc, _ = st.columns([1, 2, 1])
             with uc:
-                st.link_button("⬡ Upgrade to Paid Plan →", "https://x.com/bayantx360", use_container_width=True)
+                if st.button("⬡ Upgrade to Paid Plan →", key="upgrade_cta", use_container_width=True, type="primary"):
+                    st.switch_page(st.session_state["_home_page"])
 
         # ── Trial: free export ≤50 rows ────────────────────────────────────────
         elif trial_active and dl_cost == 0:
@@ -1335,4 +1336,4 @@ st.markdown(
     '🧹 DataCleanX · Data Cleaning & Standardisation Platform · Bayantx360 Suite'
     '</div>',
     unsafe_allow_html=True,
-  )
+      )
