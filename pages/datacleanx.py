@@ -94,9 +94,15 @@ def health_badge(score: float):
     if score >= 55: return "badge-purple", "NEEDS ATTENTION"
     return "badge-red", "CRITICAL"
 
-def clean_credit_cost(n_rows: int) -> int:
-    """Credits are only charged on export, not on any cleaning operation."""
-    if n_rows < 500:   return 0
+def clean_credit_cost(n_rows: int, trial: bool = False) -> int:
+    """
+    Cleaning is always free. Export tiers:
+      Trial users  : free for ≤50 rows · locked above 50 (upgrade required)
+      Paid users   : 1 credit ≤1,000 rows · 2 credits >1,000 rows
+    Returns 0 = free, -1 = locked (trial limit exceeded).
+    """
+    if trial:
+        return 0 if n_rows <= 50 else -1
     if n_rows <= 1000: return 1
     return 2
 
@@ -635,7 +641,7 @@ with st.sidebar:
     # FIX B2: Auto-Clean is FREE for ALL users — no credit gate, no trial block
     st.markdown(
         '<div style="font-family:\'DM Mono\',monospace;font-size:0.6rem;color:var(--accent);'
-        'margin-bottom:6px;">✓ Cleaning is always free · credits only for export</div>',
+        'margin-bottom:6px;">✓ Cleaning is always free · 1–2 credits on export</div>',
         unsafe_allow_html=True,
     )
     auto_clean_btn = (
@@ -707,7 +713,7 @@ if not _has_file:
         (c1, "01", "Health Profile",    "Auto-detects missing values, duplicates, outliers, type mismatches, and inconsistent categories. Emits a 0–100 Health Score.", "var(--accent2)"),
         (c2, "02", "Auto or Manual",    "One-click Auto-Clean for conservative safe defaults, or go column-by-column for full control.", "var(--accent)"),
         (c3, "03", "Compare & Inspect", "Side-by-side diff of original vs cleaned data with change statistics.", "var(--accent2)"),
-        (c4, "04", "Export + Audit Log","Download cleaned CSV or Excel. Credits only charged on export, never on cleaning.", "var(--accent3)"),
+        (c4, "04", "Export + Audit Log","Download cleaned CSV or Excel. 1 credit up to 1,000 rows · 2 credits above.", "var(--accent3)"),
     ]:
         with col:
             st.markdown(f"""
@@ -1171,7 +1177,7 @@ with tab4:
         n_rows_exp   = len(work)
         credits_left = st.session_state.user_credits
         trial_active = is_trial()
-        dl_cost      = clean_credit_cost(n_rows_exp)
+        dl_cost      = clean_credit_cost(n_rows_exp, trial=trial_active)
 
         st.markdown(f"""
         <div style="background:var(--surface2);border:1px solid var(--border);border-radius:12px;
@@ -1197,19 +1203,73 @@ with tab4:
         </div>
         """, unsafe_allow_html=True)
 
-        if trial_active:
-            render_locked_banner("CSV & Excel Export", is_trial_user=True)
+        # ── Trial: locked above 50 rows ────────────────────────────────────────
+        if trial_active and dl_cost == -1:
+            render_locked_banner(
+                f"Export — your cleaned dataset has {n_rows_exp:,} rows (trial limit: 50)",
+                is_trial_user=True,
+            )
+            st.markdown("""
+            <div style="font-family:'DM Mono',monospace;font-size:0.7rem;color:var(--muted);
+                        margin-top:10px;text-align:center;">
+                Upgrade to a paid plan to export datasets larger than 50 rows.
+            </div>
+            """, unsafe_allow_html=True)
             _, uc, _ = st.columns([1, 2, 1])
             with uc:
                 st.link_button("⬡ Upgrade to Paid Plan →", "https://x.com/bayantx360", use_container_width=True)
+
+        # ── Trial: free export ≤50 rows ────────────────────────────────────────
+        elif trial_active and dl_cost == 0:
+            st.markdown(f"""
+            <div style="background:rgba(0,229,200,0.04);border:1px solid rgba(0,229,200,0.15);
+                        border-radius:10px;padding:12px 16px;margin-bottom:16px;
+                        font-family:'DM Mono',monospace;font-size:0.7rem;color:var(--accent);">
+                ✓ Free trial export · {n_rows_exp} rows (within the 50-row trial limit) · no credits deducted
+            </div>
+            """, unsafe_allow_html=True)
+
+            col_dl1, col_dl2, col_dl3 = st.columns(3)
+            with col_dl1:
+                st.markdown('<div class="scard" style="margin-bottom:12px;"><div class="scard-title">CSV Export</div></div>', unsafe_allow_html=True)
+                csv_data = work.to_csv(index=False).encode("utf-8")
+                st.download_button(
+                    "⬇ Download CSV", data=csv_data,
+                    file_name="datacleanx_cleaned.csv", mime="text/csv",
+                    key="dl_csv", use_container_width=True,
+                )
+            with col_dl2:
+                st.markdown('<div class="scard" style="margin-bottom:12px;"><div class="scard-title">Excel Export</div></div>', unsafe_allow_html=True)
+                try:
+                    xlsx_data = to_excel_bytes(work)
+                    st.download_button(
+                        "⬇ Download Excel (.xlsx)", data=xlsx_data,
+                        file_name="datacleanx_cleaned.xlsx",
+                        mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                        key="dl_xlsx", use_container_width=True,
+                    )
+                except Exception as e:
+                    st.warning(f"Excel export unavailable: {e}")
+            with col_dl3:
+                st.markdown('<div class="scard" style="margin-bottom:12px;"><div class="scard-title">Audit Log (.txt)</div></div>', unsafe_allow_html=True)
+                log_text = audit_log_to_text(st.session_state.clean_audit_log)
+                st.download_button(
+                    "⬇ Download Audit Log", data=log_text.encode("utf-8"),
+                    file_name="datacleanx_audit_log.txt", mime="text/plain",
+                    key="dl_log", use_container_width=True,
+                )
+                st.caption("Always free · no credits deducted")
+
+        # ── Paid users ─────────────────────────────────────────────────────────
         else:
-            if dl_cost == 0:
-                cost_label = "Download cost: Free (under 500 rows)"
-                cost_color = "var(--accent)"
+            if dl_cost == 1:
+                cost_label = "Download cost: 1 credit · up to 1,000 rows"
+                cost_color = "var(--accent2)"
             else:
-                tier       = "500–1,000 rows → 1 credit" if n_rows_exp <= 1000 else "1,000+ rows → 2 credits"
-                cost_label = f"Download cost: {dl_cost} credit{'s' if dl_cost != 1 else ''} · {tier}"
+                cost_label = f"Download cost: 2 credits · {n_rows_exp:,} rows"
                 cost_color = "var(--warn)" if credits_left < dl_cost else "var(--accent2)"
+            if credits_left < dl_cost:
+                cost_color = "var(--warn)"
 
             st.markdown(f"""
             <div style="background:rgba(0,229,200,0.04);border:1px solid rgba(0,229,200,0.15);
