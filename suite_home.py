@@ -731,9 +731,21 @@ def render_home():
                 "features": ["KMO suitability & scree plot", "EFA with rotation (varimax etc.)", "CFA & fit indices", "Auto-fix problematic variables", "DOCX report export (paid)"],
                 "page_obj": st.session_state["_efactor_page"],
             },
+            
+            {
+                "name":     "DataCleanX",
+                "icon":     "🧹",
+                "color":    "teal",
+                "check":    "sel-check-teal",
+                "btn":      "sel-btn-teal",
+                "desc":     "Automated data cleaning with smart profiling, missing-value imputation, outlier management, and a full audit log.",
+                "features": ["Data Health Score (0–100)", "Auto-Clean mode", "Outlier visualisation & capping", "Column standardisation", "CSV / Excel + Audit Log export (paid)"],
+                "page_obj": st.session_state["_datacleanx_page"],
+            },
+          
         ]
 
-        cols = st.columns(3, gap="medium")
+        cols = st.columns(4, gap="medium")
 
         for col, app in zip(cols, APPS):
             with col:
@@ -1122,9 +1134,10 @@ _home_page      = st.Page(render_home,            title="Bayantx360 Suite", icon
 _panelstatx_page = st.Page("pages/panelstatx.py",  title="PanelStatX",       icon="📐")
 _datasynthx_page = st.Page("pages/datasynthx.py",  title="DataSynthX",       icon="🧬")
 _efactor_page    = st.Page("pages/efactor.py",     title="EFActor",          icon="🔬")
-
+_datacleanx_page    = st.Page("pages/datacleanx.py",     title="DataCleanX",          icon="🧹")
+ 
 _pg = st.navigation(
-    [_home_page, _panelstatx_page, _datasynthx_page, _efactor_page],
+    [_home_page, _panelstatx_page, _datasynthx_page, _efactor_page, datacleanx_page],
     position="hidden",
 )
 
@@ -1141,5 +1154,6 @@ st.session_state["_home_page"]       = _home_page
 st.session_state["_panelstatx_page"] = _panelstatx_page
 st.session_state["_datasynthx_page"] = _datasynthx_page
 st.session_state["_efactor_page"]    = _efactor_page
+st.session_state["_datacleanx_page"]    = _datacleanx_page
 
 _pg.run()
