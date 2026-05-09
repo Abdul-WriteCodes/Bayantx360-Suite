@@ -60,24 +60,36 @@ if not st.session_state.get("access_granted"):
 
 refresh_credits()
 
-# Per-app session keys
-for key, default in [
-    ("clean_original_df",    None),
-    ("clean_working_df",     None),
-    ("clean_profile",        None),
-    ("clean_audit_log",      []),
-    ("clean_status",         None),
-    ("uploaded_file_bytes",  None),
-    ("uploaded_file_name",   None),
-    ("auto_clean_done",      False),
-    ("outlier_decisions",    {}),
-    ("col_rename_map",       {}),
-    ("clean_has_changes",    False),   # tracks whether any transformation has been applied
-    ("clean_last_op_msg",   None),    # (type, message) for post-rerun feedback toast
-    ("_uploaded_file_id",   None),    # tracks file identity to avoid spurious resets
-]:
-    if key not in st.session_state:
+# Per-app session keys — reset on every fresh login.
+# Using a login-generation counter ensures that if any key survived sign-out
+# (e.g. was missed from SUITE_SESSION_KEYS), it still gets wiped on re-login.
+_DCX_DEFAULTS = [
+    ("clean_original_df",   None),
+    ("clean_working_df",    None),
+    ("clean_profile",       None),
+    ("clean_audit_log",     []),
+    ("clean_status",        None),
+    ("uploaded_file_bytes", None),
+    ("uploaded_file_name",  None),
+    ("auto_clean_done",     False),
+    ("outlier_decisions",   {}),
+    ("col_rename_map",      {}),
+    ("clean_has_changes",   False),
+    ("clean_last_op_msg",   None),
+    ("_uploaded_file_id",   None),
+]
+
+_current_user = st.session_state.get("user_key", "")
+if st.session_state.get("_dcx_session_user") != _current_user:
+    # New login (or first load) — forcibly reset all DataCleanX state
+    for key, default in _DCX_DEFAULTS:
         st.session_state[key] = default
+    st.session_state["_dcx_session_user"] = _current_user
+else:
+    # Same session — only set keys that are genuinely absent
+    for key, default in _DCX_DEFAULTS:
+        if key not in st.session_state:
+            st.session_state[key] = default
 
 
 # ═══════════════════════════════════════════════════════════════════════════════
@@ -132,8 +144,8 @@ def audit_log_to_text(logs: list) -> str:
     lines.append(f"Total transformations applied: {len(logs)}")
     return "\n".join(lines)
 
-@st.cache_data
 def load_data(file_bytes: bytes, file_name: str) -> pd.DataFrame:
+    """Load CSV or Excel from bytes. No caching — must not persist across sessions."""
     name = file_name.lower()
     buf  = io.BytesIO(file_bytes)
     if name.endswith(".csv"):
@@ -670,12 +682,14 @@ with st.sidebar:
             "clean_audit_log", "clean_status", "uploaded_file_bytes",
             "uploaded_file_name", "auto_clean_done", "outlier_decisions",
             "col_rename_map", "clean_has_changes", "clean_last_op_msg",
-            "_uploaded_file_id",
+            "_uploaded_file_id", "_dcx_session_user",
         ]:
             st.session_state.pop(k, None)
         st.rerun()
 
     if st.button("Sign Out", use_container_width=True):
+        # Clear Streamlit's data cache so no file data leaks to the next session
+        st.cache_data.clear()
         sign_out()
 
 
@@ -1336,4 +1350,4 @@ st.markdown(
     '🧹 DataCleanX · Data Cleaning & Standardisation Platform · Bayantx360 Suite'
     '</div>',
     unsafe_allow_html=True,
-      )
+          )
