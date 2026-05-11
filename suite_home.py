@@ -766,6 +766,7 @@ def render_home():
                 if st.button(
                     f"Launch {app['name']} →",
                     key=f"launch_{app['name']}",
+                    type="primary",
                     use_container_width=True,
                 ):
                     # Use StreamlitPage object — required for V2 callable-based routing.
@@ -779,7 +780,7 @@ def render_home():
         _, so_col, _ = st.columns([3, 1, 3])
         with so_col:
             st.markdown('<div class="signout-zone">', unsafe_allow_html=True)
-            if st.button("Sign Out", use_container_width=True):
+            if st.button("Sign Out", type="primary", use_container_width=True):
                 sign_out()
             st.markdown("</div>", unsafe_allow_html=True)
 
