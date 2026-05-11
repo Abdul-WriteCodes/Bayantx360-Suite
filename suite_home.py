@@ -970,6 +970,7 @@ def render_home():
         st.markdown('<div class="trial-btn-zone">', unsafe_allow_html=True)
         free_trial_btn = st.button(
             "⬡  Use Free Version",
+            type="primary",
             key="free_trial_btn",
             use_container_width=True,
         )
