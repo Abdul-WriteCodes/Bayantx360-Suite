@@ -2,7 +2,7 @@
 
 
 <p align="center">
-  <img src="Assets/PSX1.png" alt="PanelStatX Logo" width="800"/>
+  <img src="assets/Sxe.jpg" alt="360suite Logo" width="800"/>
 </p>
 
 
