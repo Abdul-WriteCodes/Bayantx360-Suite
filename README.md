@@ -54,34 +54,22 @@ The system is designed and equipped with four statisical analysis engines:
 
 - 🧠 AI-Powered Interpretation: statitical engines including DataSynthX and PanelStatX have a large language model powered intelligent layer that analyse, interprete, and write statistical report in human understandable lamguage
 - 📊 Visualisation: All chart have intuitive charts that profile data features and provide understandable insights
-- 📥 
-
---
-
-The system analyse panel dataset and produce outputs that covers:
-- 📋 Coefficient Summary Metrics (standard errors, t-statistics, p-values with significance stars (`***`, `**`, `*`))
-- 📐 Model Fit Metrics (R², Adjusted R², AIC, BIC, F-statistic)
-- 🔬 Model Diagnostic (Hausman Test, Jarque-Bera Test, Durbin-Watson Statistic, Breusch-Pagan Test)
-- 📊 Visual Results (Entity-level comparison bar charts, Correlation heatmaps, Q-Q Plots)
-
---
-
-- 📥 Downloadable Report (.docx)
+- 📥 Data Export: Export of data (CSV/Excel) and result write up (docx) is enabled across all tools
 
 
 ---
 ## Workflow
-PanelStatX is very easy and direct to use by anyone under 3 minutes
-1. 🌐Visit the app here: [PanelStatX](https://panelstatx.streamlit.app/)
-2. 🔑Enter Access Key
-3. 📂Upload your panel dataset (CSV or excel file) in the side bar
-4. ⚙️Configure your model and run analysis in the sidebar
-    - ▶️select columns variables (i.e dependent and independent variables)
-    - ▶️Choose any model from the 5 estimators
-    - ▶️Click 'Run Analysis' and results will appear instantly across five tabs
-5. 🔍View Results and Explore — check diagnostics, visualise entity trends, ask the AI explainer questions
-6. 📄Download full results of the analysis + AI explained outputs as docx
-> Note: Access key🔑 is required to be able to use the AI-powered explainer feature and download of analysis report. Without access key, these features are not permitted but analysis will run.
+360-Suite is very easy and direct to use by anyone under 3 minutes
+1. 🌐 Visit the app here: [Bayantx360-Suite](https://bayantx360-suite.streamlit.app/)
+2. ⚡️ Use free version or 🔑Enter Access Key (to use all product features)
+3. ↗️ Select a statistical tool (Datasynth, PanelStatX, EFACtor, DataCleanX) to work with
+4. 📂 Upload your panel dataset (CSV or excel file) in the side bar/main interface
+5. ⚙️ Configure the system and run analysis in the sidebar
+6. 🔍 View Results and Explore (use AI-Explainer where applicable)
+7. 📥 Export Data/Result
+> Note: Access key🔑 is required to be able to:
+  - Use the AI-powered explainer feature
+  - Download of analysis report. Without access key, these features are not permitted but analysis will run.
 
 --- 
 👉 Star this repo if you find it useful
