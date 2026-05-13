@@ -766,6 +766,7 @@ def render_home():
                 if st.button(
                     f"Launch {app['name']} →",
                     key=f"launch_{app['name']}",
+                    type="primary",
                     use_container_width=True,
                 ):
                     # Use StreamlitPage object — required for V2 callable-based routing.
@@ -779,7 +780,7 @@ def render_home():
         _, so_col, _ = st.columns([3, 1, 3])
         with so_col:
             st.markdown('<div class="signout-zone">', unsafe_allow_html=True)
-            if st.button("Sign Out", use_container_width=True):
+            if st.button("Sign Out", type="primary", use_container_width=True):
                 sign_out()
             st.markdown("</div>", unsafe_allow_html=True)
 
@@ -970,6 +971,7 @@ def render_home():
         st.markdown('<div class="trial-btn-zone">', unsafe_allow_html=True)
         free_trial_btn = st.button(
             "⬡  Use Free Version",
+            type="primary",
             key="free_trial_btn",
             use_container_width=True,
         )
@@ -1009,7 +1011,7 @@ def render_home():
           </ul>
         </div>
         """, unsafe_allow_html=True)
-        st.link_button("Buy Credits →", "https://flutterwave.com/pay/tumvwsar2zi5", use_container_width=True)
+        st.link_button("Buy Credits →", "https://flutterwave.com/pay/tumvwsar2zi5", type="primary", use_container_width=True)
 
     with pc2:
         st.markdown("""
@@ -1028,7 +1030,7 @@ def render_home():
           </ul>
         </div>
         """, unsafe_allow_html=True)
-        st.link_button("Buy Credits →", "https://flutterwave.com/pay/w08ixsaspudw", use_container_width=True)
+        st.link_button("Buy Credits →", "https://flutterwave.com/pay/w08ixsaspudw", type="primary", use_container_width=True)
 
     with pc3:
         st.markdown("""
@@ -1047,7 +1049,7 @@ def render_home():
           </ul>
         </div>
         """, unsafe_allow_html=True)
-        st.link_button("Buy Credits →", "https://flutterwave.com/pay/rjsshar0wqlk", use_container_width=True)
+        st.link_button("Buy Credits →", "https://flutterwave.com/pay/rjsshar0wqlk", type="primary", use_container_width=True)
 
     st.markdown("<br>", unsafe_allow_html=True)
 
